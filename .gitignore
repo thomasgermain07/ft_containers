@@ -2,7 +2,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+*.objs
 *.gch
 *.pch
 *.out

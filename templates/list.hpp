@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/21 09:03:08 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/21 16:54:48 by thgermai         ###   ########.fr       */
+/*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
+/*   Updated: 2020/11/22 15:55:18 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,151 +15,115 @@
 
 # include <iostream>
 # include <memory>
+# include "structs.hpp"
 
-namespace		ft
+namespace	ft
 {
+	template<typename T>
+	class	listIterator;
+	template<typename T>
+	class	listConstIterator;
+
 	template<class T, class Alloc = std::allocator<T> >
-	class		list;
-}
+	class		list
+	{
+	public :
+					/* *** ************************ *** */
+					/* ***		   Typedef 			*** */
+					/* *** ************************ *** */
+		typedef T 												value_type;
+		typedef _node<value_type>*								node;
+		typedef Alloc											allocator_type;
+		typedef typename allocator_type::reference 				reference;
+		typedef typename allocator_type::const_reference		const_reference;
+		typedef typename allocator_type::pointer				pointer;
+		typedef typename allocator_type::const_pointer			const_pointer;
+		typedef	listIterator<value_type>						iterator;
+		typedef	listIterator<const value_type>					const_iterator;
 
-template<class T, class Alloc>
-class		listIterator
-{
-	public:
-		/* *** ************************ *** */
-		/* *** ******* Type_def ******* *** */
-		/* *** ************************ *** */
+					/* *** ************************ *** */
+					/* *** Constructor / Destructor *** */
+					/* *** ************************ *** */
+		list() : head(NULL), tail(NULL), list_size(0), _null() { _end_node = _create_node(_null); }
+		~list() { _clean_list(); }
 
-		typedef	T										value_type;
-		typedef ft::list<T, Alloc>						__list_access;
-		typedef typename __list_access::node_type		node;
-		typedef	node*									node_ptr;
-		typedef value_type*								pointer_type;
-		typedef value_type&								reference_type;
-
-		/* *** ************************ *** */
-		/* *** Constructor / Destructor *** */
-		/* *** ************************ *** */
-		listIterator() { }
-		listIterator(node_ptr _ptr) : ptr(_ptr) { }
-		listIterator<value_type, Alloc>		&operator=(listIterator<value_type, Alloc> const &ref)
+					/* *** ************************ *** */
+					/* *** 	   Member Functions		*** */
+					/* *** ************************ *** */
+		void				push_back(value_type _data)
 		{
-			this->ptr = ref.ptr;
-			return *this;
+			head ? _insert_end(_create_node(_data)) : _first_insert(_create_node(_data));
+			list_size++;
 		}
+		size_t				size() const { return list_size; }
 
-		pointer_type		operator->() const
-		{
-			return this->ptr->data;
-		}
+		iterator			begin() { std::cout << "begin it" << std::endl; return iterator(head); }
+		iterator			end() { return iterator(_end_node); }
+		const_iterator		begin() const { std::cout << "begin const it" << std::endl; return const_iterator(head); }
+		const_iterator		end() const { return const_iterator(_end_node); }
 
-		reference_type		operator*() const
-		{
-			return *this->ptr->data;
-		}
 
 	private :
-		node_ptr		ptr;
-
-};
-
-template<class T, class Alloc>
-class		ft::list
-{
-	public:
-		/* *** ************************ *** */
-		/* *** ******* Type_def ******* *** */
-		/* *** ************************ *** */
-
-		struct node;
-
-		typedef node										node_type;
-
-		typedef T 											value_type;
-		typedef Alloc										allocator_type;
-		typedef typename allocator_type::reference 			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
-
-		typedef listIterator<value_type, allocator_type>	iterator;
-
-		/* *** ************************ *** */
-		/* *** Constructor / Destructor *** */
-		/* *** ************************ *** */
-
-		list()
+					/* *** ************************ *** */
+					/* *** 		 Variables			*** */
+					/* *** ************************ *** */
+		node					head;
+		node					tail;
+		node					_end_node;
+		allocator_type			_allocator;
+		size_t					list_size;
+		value_type				_null;
+				/* *** ************************ *** */
+				/* *** 	   Private Functions	*** */
+				/* *** ************************ *** */
+		node			_create_node(value_type _data)
 		{
-			this->head = NULL;
-			this->tail = NULL;
-			this->size = 0;
+			node		n = new _node<value_type>;
+			n->data = _allocator.allocate(sizeof(value_type));
+			_allocator.construct(n->data, _data);
+			n->next = NULL;
+			n->prev = NULL;
+			return n;
 		}
 
-		~list()
+		void			_insert_end(node n)
 		{
-			node			*current = this->head;
-			node			*next;
-			// allocator_type		allocator;
+			n->prev = tail;
+			tail->next = n;
+			tail = n;
+			n->next = _end_node;
+			_end_node->prev = tail;
+		}
+		void			_first_insert(node n)
+		{
+			head = n;
+			tail = n;
+			tail->next = _end_node;
+			_end_node->next = head;
+			head->prev = _end_node;
+		}
+		void			_clean_list() // A revoir je suis pas fan du if !list_size
+		{
+			node	current = head;
 
-			if (!current)
-				return ;
-			while (current)
+			if (!list_size)
 			{
-				next = current->next;
-				// allocator.destroy(current->data);
-				// allocator.deallocate(current->data, );
-				delete current->data; // change With alloc when finish iterators
+				_allocator.destroy(_end_node->data);
+				_allocator.deallocate(_end_node->data, sizeof(value_type));
+				delete _end_node;
+				return ;
+			}
+			while (list_size + 1 > 0)
+			{
+				node next = current->next;
+				_allocator.destroy(current->data);
+				_allocator.deallocate(current->data, sizeof(value_type));
 				delete current;
 				current = next;
+				list_size--;
 			}
 		}
-
-		/* *** ************************ *** */
-		/* *** 		  Modifiers			*** */
-		/* *** ************************ *** */
-
-		void			push_back(value_type _data)
-		{
-			node		*n = new node(_data);
-
-			if (!this->head)
-			{
-				this->head = n;
-				this->tail = n;
-				this->size += 1;
-				return ;
-			}
-			this->tail->next = n;
-			this->tail = n;
-			this->size += 1;
-		}
-
-		iterator			begin() const
-		{
-			return iterator(head);
-		}
-
-		/* *** Doubly Linked List structure *** */
-		struct 			node
-		{
-			node(value_type _data)
-			{
-				allocator_type		allocator;
-
-				this->data = allocator.allocate(1);
-				allocator.construct(this->data, _data);
-				this->prev = NULL;
-				this->next = NULL;
-			}
-
-			value_type		*data;
-			node			*prev;
-			node			*next;
-		};
-
-	private :
-		node			*head;
-		node			*tail;
-		size_t			size;
+	};
 };
+
 #endif

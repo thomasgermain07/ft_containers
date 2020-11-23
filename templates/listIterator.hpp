@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 12:08:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/23 13:12:59 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/23 17:23:35 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LISTITERATOR
 
 # include "structs.hpp"
+# include <cstddef>
 
 namespace	ft
 {
@@ -24,10 +25,12 @@ namespace	ft
 	class	ListIterator
 	{
 	public :
-		typedef T						value_type;
-		typedef value_type*				pointer_type;
-		typedef value_type&				reference_type;
-		typedef _node<value_type>*		node;
+		typedef T								value_type;
+		typedef value_type*						pointer_type;
+		typedef value_type&						reference_type;
+		typedef _node<value_type>*				node;
+		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t					difference_type;
 
 		ListIterator() {}
 		ListIterator(ListIterator const &ref) {*this = ref;}
@@ -54,10 +57,12 @@ namespace	ft
 	class	ConstListIterator
 	{
 	public :
-		typedef T						value_type;
-		typedef const value_type&		reference_type;
-		typedef const value_type*		pointer_type;
-		typedef _node<value_type>*		node;
+		typedef T								value_type;
+		typedef const value_type&				reference_type;
+		typedef const value_type*				pointer_type;
+		typedef _node<value_type>*				node;
+		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t					difference_type;
 
 		ConstListIterator() {}
 		ConstListIterator(node _ptr) : ptr(_ptr) {}

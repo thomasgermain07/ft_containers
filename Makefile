@@ -4,7 +4,7 @@ SRCS = main.cpp\
 
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.cpp=.o))
 DPDCS = $(OBJS:.o=.d)
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror
 CXX = clang++
 DEBUG = -g3 -fsanitize=address
 

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/22 15:55:18 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/23 11:23:36 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,10 @@
 # include <iostream>
 # include <memory>
 # include "structs.hpp"
+# include "listIterator.hpp"
 
 namespace	ft
 {
-	template<typename T>
-	class	listIterator;
-	template<typename T>
-	class	listConstIterator;
-
 	template<class T, class Alloc = std::allocator<T> >
 	class		list
 	{
@@ -32,14 +28,14 @@ namespace	ft
 					/* ***		   Typedef 			*** */
 					/* *** ************************ *** */
 		typedef T 												value_type;
-		typedef _node<value_type>*								node;
 		typedef Alloc											allocator_type;
+		typedef _node<value_type>*								node;
 		typedef typename allocator_type::reference 				reference;
 		typedef typename allocator_type::const_reference		const_reference;
 		typedef typename allocator_type::pointer				pointer;
 		typedef typename allocator_type::const_pointer			const_pointer;
-		typedef	listIterator<value_type>						iterator;
-		typedef	listIterator<const value_type>					const_iterator;
+		typedef	ListIterator<value_type>						iterator;
+		typedef ConstListIterator<value_type>					const_iterator;
 
 					/* *** ************************ *** */
 					/* *** Constructor / Destructor *** */
@@ -57,9 +53,9 @@ namespace	ft
 		}
 		size_t				size() const { return list_size; }
 
-		iterator			begin() { std::cout << "begin it" << std::endl; return iterator(head); }
+		iterator			begin() { return iterator(head); }
+		const_iterator		begin() const { std::cout << "here" << std::endl; return const_iterator(head); }
 		iterator			end() { return iterator(_end_node); }
-		const_iterator		begin() const { std::cout << "begin const it" << std::endl; return const_iterator(head); }
 		const_iterator		end() const { return const_iterator(_end_node); }
 
 
@@ -69,23 +65,24 @@ namespace	ft
 					/* *** ************************ *** */
 		node					head;
 		node					tail;
-		node					_end_node;
+		node					_end_node;			// Voir comment enlever ca
 		allocator_type			_allocator;
 		size_t					list_size;
-		value_type				_null;
-				/* *** ************************ *** */
-				/* *** 	   Private Functions	*** */
-				/* *** ************************ *** */
+		value_type				_null;				// ca doit aussi degager
+
+					/* *** ************************ *** */
+					/* *** 	   Private Functions	*** */
+					/* *** ************************ *** */
 		node			_create_node(value_type _data)
 		{
 			node		n = new _node<value_type>;
+
 			n->data = _allocator.allocate(sizeof(value_type));
 			_allocator.construct(n->data, _data);
 			n->next = NULL;
 			n->prev = NULL;
 			return n;
 		}
-
 		void			_insert_end(node n)
 		{
 			n->prev = tail;

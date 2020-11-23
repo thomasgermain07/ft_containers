@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 12:08:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/22 15:58:09 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/23 13:12:59 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,92 +18,64 @@
 namespace	ft
 {
 	template<typename T>
-	class	listIterator
+	class	ConstListIterator;
+
+	template<typename T>
+	class	ListIterator
 	{
 	public :
 		typedef T						value_type;
 		typedef value_type*				pointer_type;
 		typedef value_type&				reference_type;
-		typedef _node<T>*				node;
+		typedef _node<value_type>*		node;
 
-		listIterator() {}
-		listIterator(listIterator const &ref) {*this = ref;}
-		listIterator(node _ptr) : ptr(_ptr) {}
-		~listIterator() {}
+		ListIterator() {}
+		ListIterator(ListIterator const &ref) {*this = ref;}
+		ListIterator(node _ptr) : ptr(_ptr) {}
+		~ListIterator() {}
 
-					/* *** ************************ *** */
-					/* *** 		  Operators 		*** */
-					/* *** ************************ *** */
-		listIterator		&operator=(listIterator const &ref)
-		{
-			ptr = ref.ptr;
-			return *this;
-		}
-		pointer_type		operator->() const { return ptr->data; }
-		reference_type		operator*() const { return *ptr->data; }
-		bool				operator==(listIterator const &ref) const { return ptr->data == ref.ptr->data; }
-		bool				operator!=(listIterator const &ref) const { return !(*this == ref); }
-		listIterator		&operator++() { ptr = ptr->next; return *this; }
-		listIterator		&operator--() { ptr = ptr->prev; return *this; }
-		listIterator		operator++(int)
-		{
-			listIterator	tmp(*this);
-			ptr = ptr->next;
-			return tmp;
-		}
-		listIterator		operator--(int)
-		{
-			listIterator	tmp(*this);
-			ptr = ptr->prev;
-			return tmp;
-		}
-	private :
+		operator ConstListIterator<T>() const { return ConstListIterator<T>(ptr); }
+
+		ListIterator			&operator=(ListIterator const &ref) { ptr = ref.ptr; return *this; }
+		pointer_type			operator->() const { return ptr->data; }
+		reference_type			operator*() const { return *ptr->data; }
+		bool					operator==(ListIterator const &ref) const { return ptr->data == ref.ptr->data; }
+		bool					operator!=(ListIterator const &ref) const { return !(*this == ref); }
+		ListIterator			&operator++() { ptr = ptr->next; return *this; }
+		ListIterator			&operator--() { ptr = ptr->prev; return *this; }
+		ListIterator			operator++(int) { ListIterator	tmp(*this); ++(*this); return tmp; }
+		ListIterator			operator--(int) { ListIterator	tmp(*this); --(*this); return tmp; }
+
+	protected :
 		node		ptr;
 	};
 
 	template<typename T>
-	class	listIterator<const T>
+	class	ConstListIterator
 	{
 	public :
-		typedef const T					value_type;
-		typedef value_type *	const_pointer_type;
-		typedef value_type &	const_reference_type;
-		typedef _node<T>*			node;
+		typedef T						value_type;
+		typedef const value_type&		reference_type;
+		typedef const value_type*		pointer_type;
+		typedef _node<value_type>*		node;
 
-		listIterator() { std::cout << "const constructor" << std::endl;}
-		listIterator(listIterator<const T> const &ref) {std::cout << "const constructor" << std::endl; *this = ref; }
-		listIterator(listIterator<T> const &ref) {std::cout << "constructor" << std::endl; *this = ref; }
-		listIterator(node _ptr) : ptr(_ptr) {}
-		~listIterator() {}
+		ConstListIterator() {}
+		ConstListIterator(node _ptr) : ptr(_ptr) {}
+		ConstListIterator(ConstListIterator const &ref) : ptr(ref.ptr) {}
+		~ConstListIterator() {} ;
 
-					/* *** ************************ *** */
-					/* *** 		  Operators 		*** */
-					/* *** ************************ *** */
-		listIterator		&operator=(listIterator const &ref)
-		{
-			ptr = ref.ptr;
-			return *this;
-		}
-		const_pointer_type 		operator->() const { return ptr->data; }
-		const_reference_type 	operator*() const { return *ptr->data; }
-		bool					operator==(listIterator const &ref) const { return ptr->data == ref.ptr->data; }
-		bool					operator!=(listIterator const &ref) const { return !(*this == ref); }
-		listIterator		&operator++() { ptr = ptr->next; return *this; }
-		listIterator		&operator--() { ptr = ptr->prev; return *this; }
-		listIterator		operator++(int)
-		{
-			listIterator	tmp(*this);
-			ptr = ptr->next;
-			return tmp;
-		}
-		listIterator		operator--(int)
-		{
-			listIterator	tmp(*this);
-			ptr = ptr->prev;
-			return tmp;
-		}
-	private :
-		node		ptr;
+		ConstListIterator		&operator=(ConstListIterator const &ref) { ptr = ref.ptr; return *this;}
+		pointer_type			operator->() const { return ptr->data; }
+		reference_type			operator*() const { return *ptr->data; }
+		bool					operator==(ConstListIterator const &ref) const { return ptr->data == ref.ptr->data; }
+		bool					operator!=(ConstListIterator const &ref) const { return !(*this == ref); }
+		ConstListIterator		&operator++() { ptr = ptr->next; return *this; }
+		ConstListIterator		&operator--() { ptr = ptr->prev; return *this; }
+		ConstListIterator		operator++(int) { ConstListIterator	tmp(*this); ptr = ptr->next; return tmp; }
+		ConstListIterator		operator--(int) { ConstListIterator	tmp(*this); ptr = ptr->prev; return tmp; }
+
+	protected :
+			node	ptr;
 	};
 };
 

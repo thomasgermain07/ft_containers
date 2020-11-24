@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/23 18:12:30 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/24 11:20:51 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 # include <memory>
 # include <iterator>
+# include <limits>
 # include "structs.hpp"
 # include "listIterator.hpp"
 
@@ -40,27 +41,28 @@ namespace	ft
 		typedef ConstListIterator<value_type>				const_iterator;
 		typedef typename iterator::difference_type			difference_type;
 
-
 					/* *** ************************ *** */
 					/* *** Constructor / Destructor *** */
 					/* *** ************************ *** */
-		explicit list(const allocator_type &alloc = allocator_type()) : head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc) {}
-		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : head(_create_node(value_type())), tail(head), list_size(n), _allocator(alloc)
+		explicit list(const allocator_type &alloc = allocator_type()) :
+			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc) {}
+		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) :
+			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc)
 		{
-			if (n)
-				_first_insert(_create_node(val, head, head));
-			for (size_t i = 1; i < n; i++)
-				_insert_end(_create_node(val, tail, head));
+			while (n-- > 0)
+				push_back(val);
 		}
 		template<class InputIterator>
-		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) : head(NULL), tail(NULL), list_size(0), _allocator(alloc)
+		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) :
+			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc) { _copy_range(first, last); }
+		list(const list& x) : head(_create_node(value_type())), list_size(0), _allocator(allocator_type()) { *this = x; }
+		list				&operator=(list const &ref)
 		{
-			if (first != last)
-				_first_insert(_create_node(*first, head, head));
-			while (++first != last)
-				_insert_end(_create_node(*first, tail, head));
+			_clear_list();
+			_copy_range(ref.begin(), ref.end());
+			return *this;
 		}
-		~list() { _clean_list(); }
+		~list() { _clear_list(), _delete_node(head); }
 
 					/* *** ************************ *** */
 					/* *** 	   Member Functions		*** */
@@ -70,12 +72,34 @@ namespace	ft
 			head->next ? _insert_end(_create_node(_data, tail, head)) : _first_insert(_create_node(_data, head, head));
 			list_size++;
 		}
-		size_type			size() const { return list_size; }
-		iterator			begin() { return iterator(head->next); } // ATTENTION SEG_FAULT WITH NULL
-		const_iterator		begin() const { return const_iterator(head->next); } // ATTENTION SEG_FAULT WITH NULL
-		iterator			end() { return iterator(tail->next); } // ATTENTION SEG_FAULT WITH NULL
-		const_iterator		end() const { return const_iterator(tail->next); } // ATTENTION SEG_FAULT WITH NULL
+		iterator			begin() { return iterator(head->next); }
+		//					rbegin(); Reverse Iterator need to be implemented
+		const_iterator		begin() const { return const_iterator(head->next); }
+		iterator			end() { return iterator(tail->next); }
+		const_iterator		end() const { return const_iterator(tail->next); }
+		//					rend(); Reverse Iterator need to be implemented
 
+		bool				empty() const { return list_size == 0; }
+		size_type			size() const { return list_size; }
+		size_type			max_size() const { return std::numeric_limits<size_type>::max() / sizeof(node); }
+
+		reference			front() { return *head->next->data; }
+		const_reference		front() const { return *head->next->data; }
+		reference			back() { return *tail->data; }
+		const_reference		back() const { return *tail->data; }
+
+		void				assign(size_type n, const value_type &val)
+		{
+			_clear_list();
+			while (n-- > 0)
+				push_back(val);
+		}
+		template<class InputIterator>
+		void				assign(InputIterator first, InputIterator last)
+		{
+			_clear_list();
+			_copy_range(first, last);
+		}
 
 	private :
 					/* *** ************************ *** */
@@ -110,22 +134,30 @@ namespace	ft
 			head->prev = n;
 			tail = n;
 		}
-		void			_clean_list()
+		void			_clear_list()
 		{
 			node	current = head->next;
-			_delete_node(head);
+			if (!list_size)
+				return ;
 			while (current != head)
 			{
 				node next = current->next;
 				_delete_node(current);
 				current = next;
 			}
+			list_size = 0;
 		}
 		void			_delete_node(node n)
 		{
 			_allocator.destroy(n->data);
 			_allocator.deallocate(n->data, sizeof(value_type));
 			delete n;
+		}
+		template<class InputIterator>
+		void			_copy_range(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+				push_back(*first++);
 		}
 	};
 };

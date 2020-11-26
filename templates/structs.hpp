@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 14:29:00 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/22 14:29:22 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/26 09:46:27 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ namespace	ft
 		_node			*next;
 		_node			*prev;
 	};
+	template<typename X>
+	void					_swap(X &c, X &d)
+	{
+		X _tmp = c;
+		c = d;
+		d = _tmp;
+	}
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/25 14:53:45 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/26 10:12:27 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ namespace	ft
 		}
 		void					push_back(value_type const &_value)
 		{
-			head->next ? _insert_end(_create_node(_value, tail, head)) : _first_insert(_create_node(_value, head, head));
+			list_size ? _insert_end(_create_node(_value, tail, head)) : _first_insert(_create_node(_value, head, head));
 			++list_size;
 		}
 		void					pop_back()
@@ -116,7 +116,7 @@ namespace	ft
 		}
 		void					push_front(value_type const &_value)
 		{
-			head->next ? _insert_begin(_create_node(_value, head, head->next)) : _first_insert(_create_node(_value, head, head));
+			list_size ? _insert_begin(_create_node(_value, head, head->next)) : _first_insert(_create_node(_value, head, head));
 			++list_size;
 		}
 		void					pop_front()
@@ -131,7 +131,6 @@ namespace	ft
 		iterator				insert(iterator position, const value_type& val)
 		{
 			node			n = _create_node(val);
-
 			if (position == begin())
 				empty() ? _first_insert(_link_node(n, head, head)) : _insert_begin(_link_node(n, head, head->next));
 			else if (position == end())
@@ -154,6 +153,57 @@ namespace	ft
 				insert(position, *first);
 				++first;
 			}
+		}
+		iterator				erase(iterator position)
+		{
+			iterator		_ret = position;
+			++_ret;
+			if (position == begin())
+				pop_front();
+			else if (position == end())
+				pop_back();
+			else
+				_delete_pos(position);
+			return _ret;
+		}
+		iterator				erase(iterator first, iterator last)
+		{
+			while (first != last)
+				first = erase(first);
+			return last;
+		}
+		void					resize(size_type n, value_type val = value_type())
+		{
+			int		_n = n - size();
+			if (_n > 0)
+				insert(end(), static_cast<size_type>(_n), val);
+			else if (_n < 0)
+				while (_n++)
+					pop_back();
+		}
+		void					clear() { _clear_list(); }
+		void					swap(list& c)
+		{
+			ft::_swap(head, c.head);
+			ft::_swap(tail, c.tail);
+			ft::_swap(list_size, c.list_size);
+		}
+		void					splice(iterator position, list& x)
+		{
+			node			_tmp = head->next;
+			if (position == end())
+			{
+				tail->next = x.head->next;
+				x.tail->next = head;
+				x._first_insert(x.head);
+				list_size += x.list_size;
+				x.list_size = 0;
+				return ;
+			}
+			_insert_range(x.head->next, x.tail, position);
+			x._first_insert(x.head);
+			list_size += x.list_size;
+			x.list_size = 0;
 		}
 	private :
 					/* *** ************************ *** */
@@ -203,6 +253,20 @@ namespace	ft
 			}
 			_tmp == head ? _delete_node(n) : (void)n;
 		}
+		void					_insert_range(node begin, node end, iterator position)
+		{
+			node			_tmp = head->next;
+			while (_tmp != head)
+			{
+				if (position == iterator(_tmp))
+				{
+					_link_node(end, end->prev, _tmp);
+					_link_node(_tmp->prev, _tmp->prev->prev, begin);
+					return ;
+				}
+				_tmp = _tmp->next;
+			}
+		}
 		void					_first_insert(node n)
 		{
 			head->next = n;
@@ -221,6 +285,7 @@ namespace	ft
 				current = next;
 			}
 			list_size = 0;
+			_first_insert(head);
 		}
 		node					_link_node(node n, node _prev, node _next)
 		{
@@ -244,6 +309,22 @@ namespace	ft
 		{
 			while (first != last)
 				push_back(*first++);
+		}
+		void					_delete_pos(iterator position)
+		{
+			node			n = head->next;
+			while (n != head)
+			{
+				if (iterator(n) == position)
+				{
+					_link_node(n->prev, n->prev->prev, n->next);
+					_link_node(n->next, n->prev, n->next->next);
+					_delete_node(n);
+					--list_size;
+					break;
+				}
+				n = n->next;
+			}
 		}
 	};
 };

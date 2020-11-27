@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/26 10:12:27 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/27 16:16:33 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,22 +188,54 @@ namespace	ft
 			ft::_swap(tail, c.tail);
 			ft::_swap(list_size, c.list_size);
 		}
-		void					splice(iterator position, list& x)
+		void					splice(iterator position, list& x) // A voir si pas mieux faire avec le dernier slice
 		{
 			node			_tmp = head->next;
 			if (position == end())
 			{
 				tail->next = x.head->next;
+				x.head->next->prev = tail;
 				x.tail->next = head;
-				x._first_insert(x.head);
-				list_size += x.list_size;
-				x.list_size = 0;
-				return ;
+				head->prev = x.tail;
+				tail = x.tail;
 			}
-			_insert_range(x.head->next, x.tail, position);
+			else
+				_insert_range(x.head->next, x.tail, position);
 			x._first_insert(x.head);
 			list_size += x.list_size;
 			x.list_size = 0;
+		}
+		void					splice(iterator position, list& x, iterator i) // A refaire zeubi
+		{
+			node			_tmp = x.head->next;
+			while (_tmp != x.head)
+			{
+				if (i != x.end() && iterator(_tmp) == i)
+				{
+					_unlink_node(_tmp);
+					if (position == head)
+						_insert_end(_link_node(_tmp, tail->prev, head));
+					else
+						_insert_before(_tmp, position);
+					--x.list_size;
+					++list_size;
+					break ;
+				}
+				_tmp = _tmp->next;
+			}
+		}
+		void					splice(iterator position, list& x, iterator first, iterator last)
+		{
+			node			_first_n = x._find_node(first);
+			node			_last_n = x._find_node(last)->prev;
+
+			if (!_first_n || !_last_n)
+				return ;
+			size_type		dist = _distance_node(_first_n, _last_n);
+			_unlink_range(_first_n, _last_n);
+			_insert_range(_first_n, _last_n, position);
+			list_size += dist;
+			x.list_size -= dist;
 		}
 	private :
 					/* *** ************************ *** */
@@ -237,35 +269,24 @@ namespace	ft
 			head->prev = n;
 			tail = n;
 		}
-		void					_insert_before(node n, iterator pos)
+		void					_insert_before(node n, iterator position)
 		{
-			node		_tmp = head->next;
-			while (_tmp != head)
-			{
-				if (pos == iterator(_tmp))
-				{
-					_link_node(n, _tmp->prev, _tmp);
-					_tmp->prev->next = n;
-					_tmp->prev = n;
-					break ;
-				}
-				_tmp = _tmp->next;
-			}
-			_tmp == head ? _delete_node(n) : (void)n;
+			node		_tmp = _find_node(position);
+			if (!_tmp)
+				return ;
+			_link_node(n, _tmp->prev, _tmp);
+			_tmp->prev->next = n;
+			_tmp->prev = n;
 		}
 		void					_insert_range(node begin, node end, iterator position)
 		{
-			node			_tmp = head->next;
-			while (_tmp != head)
-			{
-				if (position == iterator(_tmp))
-				{
-					_link_node(end, end->prev, _tmp);
-					_link_node(_tmp->prev, _tmp->prev->prev, begin);
-					return ;
-				}
-				_tmp = _tmp->next;
-			}
+			node			_tmp = _find_node(position);
+			if (!_tmp)
+				return ;
+			_link_node(_tmp->prev, _tmp->prev->prev, begin);
+			_link_node(begin, _tmp->prev, begin->next);
+			_link_node(end, end->prev, _tmp);
+			_link_node(_tmp, end, _tmp->next);
 		}
 		void					_first_insert(node n)
 		{
@@ -298,11 +319,37 @@ namespace	ft
 			n->prev->next = n->next;
 			n->next->prev = n->prev;
 		}
+		void					_unlink_range(node start, node end)
+		{
+			start->prev->next = end->next;
+			end->next->prev = start->prev;
+		}
 		void					_delete_node(node n)
 		{
 			_allocator.destroy(n->data);
 			_allocator.deallocate(n->data, sizeof(value_type));
 			delete n;
+		}
+		node					_find_node(iterator it)
+		{
+			node				n = head->next;
+			while (n != head)
+			{
+				if (iterator(n) == it)
+					return n;
+				n = n->next;
+			}
+			return NULL;
+		}
+		size_type				_distance_node(node begin, node end)
+		{
+			size_type		dist = 0;
+			while (begin != end)
+			{
+				++dist;
+				begin = begin->next;
+			}
+			return dist;
 		}
 		template<class InputIterator>
 		void					_copy_range(InputIterator first, InputIterator last)
@@ -312,19 +359,12 @@ namespace	ft
 		}
 		void					_delete_pos(iterator position)
 		{
-			node			n = head->next;
-			while (n != head)
-			{
-				if (iterator(n) == position)
-				{
-					_link_node(n->prev, n->prev->prev, n->next);
-					_link_node(n->next, n->prev, n->next->next);
-					_delete_node(n);
-					--list_size;
-					break;
-				}
-				n = n->next;
-			}
+			node			n = _find_node(position);
+			if (!n)
+				return ;
+			_unlink_node(n);
+			_delete_node(n);
+			--list_size;
 		}
 	};
 };

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/26 10:15:56 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/27 16:15:29 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,6 @@
 #include "templates/list.hpp"
 #include "templates/listIterator.hpp"
 #include "templates/structs.hpp"
-
-template<class T>
-void		print(T const &list)
-{
-	typename T::const_iterator 		it;
-	for (it = list.begin(); it != list.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << std::endl;
-	std::cout << "list size : " << list.size() << std::endl;
-}
 
 void		test_func()
 {
@@ -39,14 +29,11 @@ void		test_func()
 		l.push_back(l.back() - 1);
 		l2.push_front(l.back() * 3);
 	}
-	print(l);
-	print(l2);
-	ft::list<int>::iterator		it = l.begin();
-	for (int i = 0; i < 5; i++)
-		++it;
-	l.splice(it, l2);
-	print(l);
-	print(l2);
+
+	l.splice(++l.begin(), l2, ++l2.begin(), --l2.end());
+	ft::print(l);
+	l.erase(++l.begin());
+	ft::print(l);
 }
 
 void		test_real_func()
@@ -60,15 +47,11 @@ void		test_real_func()
 		l.push_back(l.back() - 1);
 		l2.push_front(l.back() * 3);
 	}
-	print(l);
-	print(l2);
 
-	std::list<int>::iterator		it = l.begin();
-	for (int i = 0; i < 5; i++)
-		++it;
-	l.splice(it, l2);
-	print(l);
-	print(l2);
+	l.splice(++l.begin(), l2, ++l2.begin(), --l2.end());
+	ft::print(l);
+	l.erase(++l.begin());
+	ft::print(l);
 }
 
 int			main()

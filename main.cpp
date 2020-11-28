@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/27 16:15:29 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/28 16:40:45 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,58 @@
 #include "templates/listIterator.hpp"
 #include "templates/structs.hpp"
 
+bool		is_greater(int a, int b)
+{
+	return (a < b);
+}
+
 void		test_func()
 {
 	ft::list<int> 		l;
-	ft::list<int>		l2;
 
-	l.push_back(10);
-	while (l.back() > 1)
-	{
-		l.push_back(l.back() - 1);
-		l2.push_front(l.back() * 3);
-	}
+	l.push_back(12);
+	l.push_back(0);
+	l.push_back(42);
+	l.push_back(51);
+	l.push_back(3);
+	l.push_back(15);
+	l.push_back(82);
+	l.push_back(14);
+	l.push_back(20);
+	l.push_back(32);
+	l.push_back(8);
+	l.push_back(7);
 
-	l.splice(++l.begin(), l2, ++l2.begin(), --l2.end());
 	ft::print(l);
-	l.erase(++l.begin());
+	l.unique(is_greater);
 	ft::print(l);
 }
 
 void		test_real_func()
 {
 	std::list<int> 		l;
-	std::list<int>		l2;
 
-	l.push_back(10);
-	while (l.back() > 1)
-	{
-		l.push_back(l.back() - 1);
-		l2.push_front(l.back() * 3);
-	}
+	l.push_back(12);
+	l.push_back(0);
+	l.push_back(42);
+	l.push_back(51);
+	l.push_back(3);
+	l.push_back(15);
+	l.push_back(82);
+	l.push_back(14);
+	l.push_back(20);
+	l.push_back(32);
+	l.push_back(8);
+	l.push_back(7);
 
-	l.splice(++l.begin(), l2, ++l2.begin(), --l2.end());
 	ft::print(l);
-	l.erase(++l.begin());
+	l.unique(is_greater);
 	ft::print(l);
 }
 
 int			main()
 {
-
+	srand(time(NULL));
 	test_func();
 	std::cout << "\n-------------------------------------------------\n" << std::endl;
 	test_real_func();

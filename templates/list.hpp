@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/27 16:16:33 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/11/28 16:41:26 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,41 +188,12 @@ namespace	ft
 			ft::_swap(tail, c.tail);
 			ft::_swap(list_size, c.list_size);
 		}
-		void					splice(iterator position, list& x) // A voir si pas mieux faire avec le dernier slice
+		void					splice(iterator position, list& x) { splice(position, x, x.begin(), x.end()); }
+		void					splice(iterator position, list& x, iterator i)
 		{
-			node			_tmp = head->next;
-			if (position == end())
-			{
-				tail->next = x.head->next;
-				x.head->next->prev = tail;
-				x.tail->next = head;
-				head->prev = x.tail;
-				tail = x.tail;
-			}
-			else
-				_insert_range(x.head->next, x.tail, position);
-			x._first_insert(x.head);
-			list_size += x.list_size;
-			x.list_size = 0;
-		}
-		void					splice(iterator position, list& x, iterator i) // A refaire zeubi
-		{
-			node			_tmp = x.head->next;
-			while (_tmp != x.head)
-			{
-				if (i != x.end() && iterator(_tmp) == i)
-				{
-					_unlink_node(_tmp);
-					if (position == head)
-						_insert_end(_link_node(_tmp, tail->prev, head));
-					else
-						_insert_before(_tmp, position);
-					--x.list_size;
-					++list_size;
-					break ;
-				}
-				_tmp = _tmp->next;
-			}
+			if (i == x.end())
+				return ;
+			splice(position, x, i, ++i);
 		}
 		void					splice(iterator position, list& x, iterator first, iterator last)
 		{
@@ -231,12 +202,39 @@ namespace	ft
 
 			if (!_first_n || !_last_n)
 				return ;
-			size_type		dist = _distance_node(_first_n, _last_n);
+			size_type		dist = _distance_node(_first_n, _last_n) + 1;
 			_unlink_range(_first_n, _last_n);
 			_insert_range(_first_n, _last_n, position);
 			list_size += dist;
 			x.list_size -= dist;
 		}
+		void					remove(const value_type& val)
+		{
+			for (iterator it = begin(); it != end(); ++it)
+				if (*it == val)
+					erase(it);
+		}
+		template<class Predicate>
+		void					remove_if(Predicate pred)
+		{
+			for (iterator it = begin(); it != end(); ++it)
+				if (pred(*it))
+					erase(it);
+		}
+		void					unique()
+		{
+			for (iterator it = begin(); it != end(); ++it)
+			{
+				iterator		next = it;
+				while (*++next == *it)
+					erase(next);
+			}
+		}
+		// template<class BinaryPredicate>
+		// void					unique(BinaryPredicate binary_pred)
+		// {
+
+		// }
 	private :
 					/* *** ************************ *** */
 					/* *** 		 Variables			*** */
@@ -339,11 +337,15 @@ namespace	ft
 					return n;
 				n = n->next;
 			}
+			if (iterator(n) == it)
+				return n;
 			return NULL;
 		}
 		size_type				_distance_node(node begin, node end)
 		{
 			size_type		dist = 0;
+			if (begin == end)
+				return dist;
 			while (begin != end)
 			{
 				++dist;

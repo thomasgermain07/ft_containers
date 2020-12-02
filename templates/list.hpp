@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/28 16:41:26 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/02 14:06:51 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,18 @@ namespace	ft
 		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) :
 			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc)
 		{
+			 _link_node(head, tail, tail);
 			while (n-- > 0)
 				push_back(val);
 		}
 		template<class InputIterator>
 		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) :
 			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc) { _copy_range(first, last); }
-		list(const list& x) : head(_create_node(value_type())), list_size(0), _allocator(allocator_type()) { *this = x; }
+		list(const list& x) : head(_create_node(value_type())), tail(head), list_size(0), _allocator(allocator_type()) {  _link_node(head, tail, tail); *this = x; }
 		list				&operator=(list const &ref)
 		{
+			if (!ref.size())
+				return *this;
 			_clear_list();
 			_copy_range(ref.begin(), ref.end());
 			return *this;
@@ -230,11 +233,93 @@ namespace	ft
 					erase(next);
 			}
 		}
-		// template<class BinaryPredicate>
-		// void					unique(BinaryPredicate binary_pred)
-		// {
-
-		// }
+		template<class BinaryPredicate>
+		void					unique(BinaryPredicate binary_pred)
+		{
+			iterator			prev = begin();
+			iterator			current = prev;
+			while (++current != end())
+			{
+				if (binary_pred(*prev, *current))
+				{
+					erase(current);
+					current = prev;
+				}
+				else
+					prev = current;
+			}
+		}
+		void					sort()
+		{
+			node			curr = head->next;
+			while (curr->next != head)
+			{
+				node		next = curr->next;
+				if (*next->data < *curr->data)
+				{
+					_swap_node(next, curr);
+					curr = head;
+				}
+				curr = curr->next;
+			}
+		}
+		template<class Compare>
+		void					sort(Compare comp)
+		{
+			node 			curr = head->next;
+			while (curr->next != head)
+			{
+				node		next = curr->next;
+				if (comp(*next->data, *curr->data))
+				{
+					_swap_node(curr, next);
+					curr = head;
+				}
+				curr = curr->next;
+			}
+		}
+		void					merge(list& x)
+		{
+			merge(x, basic_comp<value_type>);
+		}
+		template<class Compare>
+		void					merge(list& x, Compare comp)
+		{
+			iterator			it;
+			iterator			xit = x.begin();
+			if (&x == this)
+				return ;
+			for (it = begin(); it != end(); ++it)
+			{
+				xit = x.begin();
+				while (xit != x.end() && comp(*xit, *it))
+				{
+					// node		n = x._find_node(xit);
+					// _unlink_node(n);
+					// _insert_before(n, it);
+					_transfer_node(x._find_node(xit), it);
+					xit = x.begin();
+				}
+			}
+			while (xit != x.end())
+			{
+				_transfer_node(x._find_node(xit), it);
+				xit = x.begin();
+			}
+			list_size += x.size();
+			x.list_size = 0;
+		}
+		void					reverse()
+		{
+			node			start = head->next;
+			node			end = head->prev;
+			for (int i = 0; i < list_size / 2; ++i)
+			{
+				_swap_node(start, end);
+				start = start->next;
+				end = end->prev;
+			}
+		}
 	private :
 					/* *** ************************ *** */
 					/* *** 		 Variables			*** */
@@ -317,6 +402,17 @@ namespace	ft
 			n->prev->next = n->next;
 			n->next->prev = n->prev;
 		}
+		void					_swap_node(node n1, node n2)
+		{
+			pointer			_tmp = n1->data;
+			n1->data = n2->data;
+			n2->data = _tmp;
+		}
+		void					_transfer_node(node n, iterator position)
+		{
+			_unlink_node(n);
+			_insert_before(n, position);
+		}
 		void					_unlink_range(node start, node end)
 		{
 			start->prev->next = end->next;
@@ -369,6 +465,66 @@ namespace	ft
 			--list_size;
 		}
 	};
+
+					/* *** ************************ *** */
+					/* *** 	 relational operator	*** */
+					/* *** ************************ *** */
+
+	template<class T, class Alloc>
+	bool				operator==(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		typename ft::list<T, Alloc>::const_iterator		lit = lhs.begin();
+		typename ft::list<T, Alloc>::const_iterator		rit = rhs.begin();
+		while (lit != lhs.end())
+		{
+			if (*lit++ != *rit++)
+				return false;
+		}
+		return true;
+	}
+	template<class T, class Alloc>
+	bool				operator<(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return lhs.size() < rhs.size();
+		typename ft::list<T, Alloc>::const_iterator		lit = lhs.begin();
+		typename ft::list<T, Alloc>::const_iterator		rit = rhs.begin();
+		while (lit != lhs.end())
+		{
+			if (*lit != *rit)
+				return *lit < *rit;
+			++lit;
+			++rit;
+		}
+		return false;
+	}
+	template<class T, class Alloc>
+	bool				operator!=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+	template<class T, class Alloc>
+	bool				operator>(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		return rhs < lhs;
+	}
+	template<class T, class Alloc>
+	bool				operator>=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		return !(lhs < rhs);
+	}
+	template<class T, class Alloc>
+	bool				operator<=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
+	{
+		return !(rhs < lhs);
+	}
+	template<class T, class Alloc>
+	void				swap(list<T, Alloc>& x, list<T, Alloc>& y)
+	{
+		x.swap(y);
+	}
 };
 
 #endif

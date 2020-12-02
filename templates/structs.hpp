@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 14:29:00 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/27 14:25:39 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/02 14:01:46 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,10 @@ namespace	ft
 		d = _tmp;
 	}
 	template<class T>
-	void		rprint(T const &list)
+	bool		basic_comp(T a, T b)
 	{
-		typename T::const_reverse_iterator 		it;
-		for (it = list.rbegin(); it != list.rend(); ++it)
-			std::cout << *it << " ";
-		std::cout << std::endl;
-		std::cout << "list size : " << list.size() << std::endl;
+		return (a <= b);
 	}
-
-	template<class T>
-	void		print(T const &list)
-	{
-		typename T::const_iterator 		it;
-		for (it = list.begin(); it != list.end(); ++it)
-			std::cout << *it << " ";
-		std::cout << std::endl;
-		std::cout << "list size : " << list.size() << std::endl;
-}
 }
 
 #endif

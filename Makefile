@@ -1,6 +1,8 @@
 NAME = a.out
+SRCSDIR = srcs
 OBJSDIR = .objs
 SRCS = main.cpp\
+		ListTest.cpp
 
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.cpp=.o))
 DPDCS = $(OBJS:.o=.d)
@@ -23,7 +25,7 @@ fg : $(OBJS)
 	@($(CXX) $(CFLAGS) $(DEBUG) $(OBJS) -o $(NAME))
 	@(echo "$(NAME) created")
 
-$(OBJSDIR)/%.o : %.cpp | $(OBJSDIR)
+$(OBJSDIR)/%.o : $(SRCSDIR)/%.cpp | $(OBJSDIR)
 	@(echo "Compiling -> $^")
 	@($(CXX) $(CFLAGS) -MMD -c $< -o $@)
 

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/02 14:06:51 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/03 16:01:56 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ namespace	ft
 	class		list
 	{
 	public :
-					/* *** ************************ *** */
-					/* ***		   Typedef 			*** */
-					/* *** ************************ *** */
 		typedef T 											value_type;
 		typedef Alloc										allocator_type;
 		typedef	size_t										size_type;
@@ -294,9 +291,6 @@ namespace	ft
 				xit = x.begin();
 				while (xit != x.end() && comp(*xit, *it))
 				{
-					// node		n = x._find_node(xit);
-					// _unlink_node(n);
-					// _insert_before(n, it);
 					_transfer_node(x._find_node(xit), it);
 					xit = x.begin();
 				}
@@ -321,17 +315,11 @@ namespace	ft
 			}
 		}
 	private :
-					/* *** ************************ *** */
-					/* *** 		 Variables			*** */
-					/* *** ************************ *** */
 		node					head;
 		node					tail;
 		allocator_type			_allocator;
 		size_type				list_size;
 
-					/* *** ************************ *** */
-					/* *** 	   Private Functions	*** */
-					/* *** ************************ *** */
 		node					_create_node(value_type const &_value, node _prev = NULL, node _next = NULL)
 		{
 			node		n = new _node<value_type>;
@@ -465,10 +453,6 @@ namespace	ft
 			--list_size;
 		}
 	};
-
-					/* *** ************************ *** */
-					/* *** 	 relational operator	*** */
-					/* *** ************************ *** */
 
 	template<class T, class Alloc>
 	bool				operator==(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)

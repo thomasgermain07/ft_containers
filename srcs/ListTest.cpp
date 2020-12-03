@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:26:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/02 14:08:32 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/02 14:09:26 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -499,21 +499,21 @@ static void			unique_sort_merge_reverse_test()
 void				ListTest()
 {
 	print_header("List Tester :\n");
-	// test_constructor();
-	// assignment_test();
-	// begin_rbegin_test();
-	// end_rend_test();
-	// empty_size_test();
-	// assign_test();
-	// push_pop_front_test();
-	// push_pop_back_test();
-	// insert_test();
-	// erase_test();
-	// swap_test();
-	// resize_test();
-	// clear_test();
-	// splice_test();
-	// remove_test();
-	// remove_if_test();
+	test_constructor();
+	assignment_test();
+	begin_rbegin_test();
+	end_rend_test();
+	empty_size_test();
+	assign_test();
+	push_pop_front_test();
+	push_pop_back_test();
+	insert_test();
+	erase_test();
+	swap_test();
+	resize_test();
+	clear_test();
+	splice_test();
+	remove_test();
+	remove_if_test();
 	unique_sort_merge_reverse_test();
 }

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/07 16:51:50 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/07 21:08:17 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR
 
 # include <iostream>
+# include <memory>
 # include "vectorIterator.hpp"
 
 namespace	ft

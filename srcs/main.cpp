@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/07 17:00:40 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/08 00:21:21 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "test_header.hpp"
 #include <vector>
 #include "../templates/vector.hpp"
+#include "../templates/bst.hpp"
 
 void		print_header(std::string msg)
 {
@@ -31,38 +32,32 @@ void		print_msg(std::string msg)
 	std::cout << msg << RESET << std::endl;
 }
 /* ----------------------------------------------------------------------------------------------------------- */
-template<class T>
-void		print_info(T const &vector)
-{
-	std::cout << "size : " << vector.size() << std::endl;
-	std::cout << "capacity : " << vector.capacity() << std::endl;
-}
 
-template<class T>
-void		exec_test(T &v)
-{
-	v.push_back(15);
-	while (v.back())
-		v.push_back(v.back() - 1);
-	v.insert(++v.begin(), 5, 42);
-	v.pop_back();
-	print(v);
-	rprint(v);
-}
+// template<class T>
+// void		exec_test(T &v)
+// {
+
+// }
 
 void		test_func()
 {
-	ft::vector<int>		v;
-	exec_test<ft::vector<int> >(v);
+	typedef ft::BinaryNode<int>*		node;
+
+	ft::BinarySearchTree<int>		bst;
+	for (int i = 0; i < 500; ++i)
+		bst.add_node(rand() % 200);
+	std::cout << bst.size() << std::endl;
+	bst.print();
+	if (bst.find(42))
+		std::cout << "found 42" << std::endl;
 }
 
-void		test_real_func()
-{
-	std::vector<int>		v;
-	exec_test<std::vector<int> >(v);
-}
 
 
+// void		test_real_func()
+// {
+
+// }
 
 int			main()
 {
@@ -73,7 +68,7 @@ int			main()
 
 	test_func();
 	std::cout << "\n-------------------------------------------------\n" << std::endl;
-	test_real_func();
+	// test_real_func();
 	std::cout << "\n" << std::endl;
 
 	std::cout << "Print leaks" << std::endl;

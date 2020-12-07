@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/03 16:01:56 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/07 16:18:14 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,30 +485,15 @@ namespace	ft
 		return false;
 	}
 	template<class T, class Alloc>
-	bool				operator!=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
-	{
-		return !(lhs == rhs);
-	}
+	bool				operator!=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs) { return !(lhs == rhs); }
 	template<class T, class Alloc>
-	bool				operator>(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
-	{
-		return rhs < lhs;
-	}
+	bool				operator>(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs) { return rhs < lhs; }
 	template<class T, class Alloc>
-	bool				operator>=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
-	{
-		return !(lhs < rhs);
-	}
+	bool				operator>=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs) { return !(lhs < rhs); }
 	template<class T, class Alloc>
-	bool				operator<=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs)
-	{
-		return !(rhs < lhs);
-	}
+	bool				operator<=(const list<T, Alloc>& lhs, const list<T, Alloc>& rhs) { return !(rhs < lhs); }
 	template<class T, class Alloc>
-	void				swap(list<T, Alloc>& x, list<T, Alloc>& y)
-	{
-		x.swap(y);
-	}
+	void				swap(list<T, Alloc>& x, list<T, Alloc>& y) { x.swap(y); }
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/04 20:03:21 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/07 17:00:40 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,28 @@ void		print_info(T const &vector)
 	std::cout << "capacity : " << vector.capacity() << std::endl;
 }
 
+template<class T>
+void		exec_test(T &v)
+{
+	v.push_back(15);
+	while (v.back())
+		v.push_back(v.back() - 1);
+	v.insert(++v.begin(), 5, 42);
+	v.pop_back();
+	print(v);
+	rprint(v);
+}
+
 void		test_func()
 {
-	ft::vector<int>		v(15);
-	for (int i = 0; i < 15; ++i)
-		v[i] = i;
-	ft::vector<int>::iterator	it = v.begin();
-	for (int i = 0; i < 5; ++i)
-		++it;
-	print(v);
-	ft::vector<int>::iterator	it2 = v.insert(it, 42);
-	print(v);
-	print_info(v);
-	std::cout << "ret value = " << *it2 << std::endl;
+	ft::vector<int>		v;
+	exec_test<ft::vector<int> >(v);
 }
 
 void		test_real_func()
 {
-	std::vector<int>		v(15);
-	for (int i = 0; i < 15; ++i)
-		v[i] = i;
-	std::vector<int>::iterator	it = v.begin();
-	advance(it, 5);
-	std::vector<int>::iterator	it2 = v.insert(it, 42);
-	print(v);
-	print_info(v);
-	std::cout << "ret value = " << *it2 << std::endl;
+	std::vector<int>		v;
+	exec_test<std::vector<int> >(v);
 }
 
 
@@ -78,9 +74,7 @@ int			main()
 	test_func();
 	std::cout << "\n-------------------------------------------------\n" << std::endl;
 	test_real_func();
-	std::cout << std::endl;
-
-	std::cout << std::endl;
+	std::cout << "\n" << std::endl;
 
 	std::cout << "Print leaks" << std::endl;
 	std::cin.get();

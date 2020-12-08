@@ -6,16 +6,17 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/08 00:21:21 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/08 23:42:50 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <algorithm>
 #include "test_header.hpp"
-#include <vector>
-#include "../templates/vector.hpp"
+#include <map>
+#include "../templates/map.hpp"
 #include "../templates/bst.hpp"
+#include <utility>
 
 void		print_header(std::string msg)
 {
@@ -34,24 +35,31 @@ void		print_msg(std::string msg)
 /* ----------------------------------------------------------------------------------------------------------- */
 
 // template<class T>
-// void		exec_test(T &v)
+// class		comparator : public std::binary_function<T,T,bool>
 // {
+// public :
+// 	comparator() {}
+// 	bool 	operator()(const T &x, const T &y) const
+// 	{
+// 		return x > y;
+// 	}
+// };
 
-// }
 
 void		test_func()
 {
-	typedef ft::BinaryNode<int>*		node;
+	ft::map<int, std::string>		m;
 
-	ft::BinarySearchTree<int>		bst;
-	for (int i = 0; i < 500; ++i)
-		bst.add_node(rand() % 200);
-	std::cout << bst.size() << std::endl;
-	bst.print();
-	if (bst.find(42))
-		std::cout << "found 42" << std::endl;
+	m.insert(42, "best school");
+	m.insert(10, "salut");
+	m.insert(58, "Patrick Balkani");
+	m.insert(22, "Michel vedette");
+
+	m[44] = "Challa je suis un génie";
+
+	m.print();
+
 }
-
 
 
 // void		test_real_func()

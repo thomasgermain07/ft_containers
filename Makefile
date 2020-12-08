@@ -18,16 +18,16 @@ all : $(NAME)
 -include $(DPDCS)
 
 $(NAME) : $(OBJS)
-	@($(CXX) $(CFLAGS) $(OBJS) -o $(NAME))
+	@($(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME))
 	@(echo "$(NAME) created")
 
 fg : $(OBJS)
-	@($(CXX) $(CFLAGS) $(DEBUG) $(OBJS) -o $(NAME))
+	@($(CXX) $(CXXFLAGS) $(DEBUG) $(OBJS) -o $(NAME))
 	@(echo "$(NAME) created")
 
 $(OBJSDIR)/%.o : $(SRCSDIR)/%.cpp | $(OBJSDIR)
 	@(echo "Compiling -> $^")
-	@($(CXX) $(CFLAGS) -MMD -c $< -o $@)
+	@($(CXX) $(CXXFLAGS) -MMD -c $< -o $@)
 
 $(OBJSDIR) :
 	@(mkdir -p .objs)

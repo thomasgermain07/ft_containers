@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/08 16:20:18 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/09 00:04:57 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ namespace	ft
 
 	/* *** ************************************************************ *** */
 
-	template<class T, class Alloc = std::allocator<T>, class value_compare = std::less<T> >
+	template<class T, class value_compare = std::less<T>, class Alloc = std::allocator<T> >
 	class		BinarySearchTree
 	{
 	public :
@@ -77,33 +77,43 @@ namespace	ft
 		typedef typename allocator_type::reference	reference;
 		typedef typename allocator_type::pointer	pointer;
 
-		BinarySearchTree(value_compare = value_compare()) : root(NULL), _size(0) {}
-		BinarySearchTree(const BinarySearchTree &ref) { *this = ref; }
+		BinarySearchTree() : root(NULL), _size(0) {}
+		BinarySearchTree(const value_compare& comp) : root(NULL), _size(0), _comp(comp) {}
+		BinarySearchTree(const BinarySearchTree &ref) : root(NULL), _size(0) { *this = ref; }
 		BinarySearchTree			&operator=(const BinarySearchTree &ref)
 		{
 			if (root)
 				delete_tree(root);
-			root = ref.root->clone();
+			if (ref.root)
+				root = ref.root->clone();
 			_size = ref.size();
+			_comp = ref._comp;
 			return *this;
 		}
 		~BinarySearchTree() { delete_tree(root); }
 
-		void				add_node(const value_type &val)
-		{
-			if (!root)
-			{
-				root = new BinaryNode<T, Alloc>(val);
-				++_size;
-			}
-			else if (insert_node(root, new BinaryNode<T, Alloc>(val)))
-				++_size;
-		}
+		void				print() const { tree_visit(root); std::cout << std::endl; } // to delete
 
-		size_type			size() const { return _size; }
 		value_type			min() const { return *min_in_tree(root)->data; }
 		value_type			max() const { return *max_in_tree(root)->data; }
+		size_type			size() const { return _size; }
 		bool				empty() const { return !_size; }
+		void				erase(const value_type& val) { delete_in_tree(root, val) ;}
+
+		node				add_node(const value_type &val)
+		{
+			node n = new BinaryNode<T, Alloc>(val);
+
+			if (!root)
+			{
+				root = n;
+				++_size;
+			}
+			else if (insert_node(root, n))
+				++_size;
+			return n;
+		}
+
 		pointer				find(const value_type& val) const
 		{
 			node			n = find_in_tree(root, val);
@@ -111,28 +121,27 @@ namespace	ft
 				return NULL;
 			return n->data;
 		}
-		void				erase(const value_type& val) { delete_in_tree(root, val) ;}
-		void				print() const { tree_visit(root); std::cout << std::endl; } // to delete
+
 	private :
-		node		root;
-		size_type	_size;
+		node			root;
+		size_type		_size;
 		value_compare	_comp;
 
 		bool				insert_node(node curr, node n)
 		{
-			if (*n->data == *curr->data)
+			if (!_comp(*n->data, *curr->data) && !_comp(*curr->data, *n->data)) // Equal
 			{
 				delete n;
 				return false;
 			}
-			if (*n->data < *curr->data)
+			if (_comp(*n->data, *curr->data)) // Less
 			{
 				if (curr->left)
 					return insert_node(curr->left, n);
 				else
 					curr->left = n;
 			}
-			else if (*n->data > *curr->data)
+			else if (_comp(*curr->data, *n->data)) // More
 			{
 				if (curr->right)
 					return insert_node(curr->right, n);
@@ -151,24 +160,24 @@ namespace	ft
 				delete_tree(curr->right);
 			delete curr;
 		}
-		void				tree_visit(node curr) const // To deletet
+		void				tree_visit(node curr) const // To delete
 		{
 			if (curr->left)
 				tree_visit(curr->left);
-			std::cout << *curr->data << " ";
+			std::cout << curr->data->first << " " << curr->data->second << std::endl;
 			if (curr->right)
 				tree_visit(curr->right);
 		}
 		node				find_in_tree(const node curr, const value_type& val) const
 		{
-			if (*curr->data == val)
+			if (!_comp(val, *curr->data) && !_comp(*curr->data, val)) // Equal
 				return curr;
-			else if (*curr->data > val)
+			else if (_comp(val, *curr->data)) // Less
 			{
 				if (curr->left)
 					return find_in_tree(curr->left, val);
 			}
-			else if (*curr->data < val)
+			else if (_comp(*curr->data, val)) // More
 			{
 				if (curr->right)
 					return find_in_tree(curr->right, val);
@@ -179,9 +188,9 @@ namespace	ft
 		{
 			if (!curr)
 				return curr;
-			if (val < *curr->data)
+			if (_comp(val, *curr->data)) // Less
 				curr->left = delete_in_tree(curr->left, val);
-			else if (val > *curr->data)
+			else if (_comp(*curr->data, val)) // More
 				curr->right = delete_in_tree(curr->right, val);
 			else
 			{

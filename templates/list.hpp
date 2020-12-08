@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/07 16:18:14 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/08 14:47:47 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ namespace	ft
 					/* *** Constructor / Destructor *** */
 					/* *** ************************ *** */
 		explicit list(const allocator_type &alloc = allocator_type()) :
-			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc)  { _link_node(head, tail, tail); }
+			head(_create_node(value_type())), tail(head), _allocator(alloc), list_size(0) { _link_node(head, tail, tail); }
 		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) :
-			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc)
+			head(_create_node(value_type())), tail(head), _allocator(alloc), list_size(0)
 		{
 			 _link_node(head, tail, tail);
 			while (n-- > 0)
@@ -54,8 +54,8 @@ namespace	ft
 		}
 		template<class InputIterator>
 		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) :
-			head(_create_node(value_type())), tail(head), list_size(0), _allocator(alloc) { _copy_range(first, last); }
-		list(const list& x) : head(_create_node(value_type())), tail(head), list_size(0), _allocator(allocator_type()) {  _link_node(head, tail, tail); *this = x; }
+			head(_create_node(value_type())), tail(head), _allocator(alloc), list_size(0) { _copy_range(first, last); }
+		list(const list& x) : head(_create_node(value_type())), tail(head), _allocator(allocator_type()), list_size(0) {  _link_node(head, tail, tail); *this = x; }
 		list				&operator=(list const &ref)
 		{
 			if (!ref.size())
@@ -307,7 +307,7 @@ namespace	ft
 		{
 			node			start = head->next;
 			node			end = head->prev;
-			for (int i = 0; i < list_size / 2; ++i)
+			for (size_type i = 0; i < list_size / 2; ++i)
 			{
 				_swap_node(start, end);
 				start = start->next;

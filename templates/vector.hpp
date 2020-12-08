@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/07 21:08:17 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/08 14:42:31 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ namespace	ft
 					/* *** ************************ *** */
 					/* *** Constructor / Destructor *** */
 					/* *** ************************ *** */
-		explicit vector(const allocator_type& alloc = allocator_type()) { _init_array(); }
-		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) { _init_array(n, val); }
+		explicit vector(const allocator_type& alloc = allocator_type()) : _allocator(alloc) { _init_array(); }
+		explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc) { _init_array(n, val); }
 		template <class InputIterator>
-		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) { _init_array(); assign(first, last); }
+		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _allocator(alloc) { _init_array(); assign(first, last); }
 		vector(const vector& x) { _init_array(); *this = x; }
 		~vector() { _delete_array(); }
 		vector						&operator=(const vector& x)

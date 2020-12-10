@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 12:08:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/11/30 10:57:22 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/10 23:39:55 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ namespace	ft
 		ListIterator			operator++(int) { ListIterator	tmp(*this); ++(*this); return tmp; }
 		ListIterator			operator--(int) { ListIterator	tmp(*this); --(*this); return tmp; }
 
-	protected :
+	private :
 		node		ptr;
 	};
 
@@ -85,7 +85,7 @@ namespace	ft
 		ConstListIterator		operator++(int) { ConstListIterator	tmp(*this); ptr = ptr->next; return tmp; }
 		ConstListIterator		operator--(int) { ConstListIterator	tmp(*this); ptr = ptr->prev; return tmp; }
 
-	protected :
+	private :
 			node	ptr;
 	};
 

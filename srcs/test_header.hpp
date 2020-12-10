@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:37:41 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/07 16:47:26 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/10 22:54:31 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TEST_HEADER
 
 # include <iostream>
+# include "../templates/map.hpp"
 
 # define RESET "\e[0m"
 # define BOLD "\e[1m"

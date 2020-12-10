@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/09 00:04:57 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/10 23:37:00 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ namespace	ft
 
 		BinaryNode(const value_type &val) : left(NULL), right(NULL)
 		{
-			data = allocator.allocate(1);
-			allocator.construct(data, val);
+			allocator_type		alloc;
+
+			data = alloc.allocate(1);
+			alloc.construct(data, val);
 		}
 		BinaryNode			&operator=(const BinaryNode &ref)
 		{
@@ -41,8 +43,10 @@ namespace	ft
 		}
 		~BinaryNode()
 		{
-			allocator.destroy(data);
-			allocator.deallocate(data, 1);
+			allocator_type		alloc;
+
+			alloc.destroy(data);
+			alloc.deallocate(data, 1);
 		}
 
 		pointer				operator->() const { return data; }
@@ -61,7 +65,6 @@ namespace	ft
 		pointer				data;
 		node				left;
 		node				right;
-		allocator_type		allocator;
 	};
 
 	/* *** ************************************************************ *** */
@@ -77,29 +80,36 @@ namespace	ft
 		typedef typename allocator_type::reference	reference;
 		typedef typename allocator_type::pointer	pointer;
 
-		BinarySearchTree() : root(NULL), _size(0) {}
-		BinarySearchTree(const value_compare& comp) : root(NULL), _size(0), _comp(comp) {}
-		BinarySearchTree(const BinarySearchTree &ref) : root(NULL), _size(0) { *this = ref; }
+		BinarySearchTree() : root(NULL), _size(0), _comp(value_compare()) { _set_end_node();}
+		BinarySearchTree(const value_compare& comp) : root(NULL), _size(0), _comp(comp) { _set_end_node(); }
+		BinarySearchTree(const BinarySearchTree &ref)
+			: root(NULL), _size(ref.size()), _comp(ref._comp) { *this = ref; }
 		BinarySearchTree			&operator=(const BinarySearchTree &ref)
 		{
 			if (root)
-				delete_tree(root);
+				_delete_tree(root);
 			if (ref.root)
 				root = ref.root->clone();
-			_size = ref.size();
-			_comp = ref._comp;
 			return *this;
 		}
-		~BinarySearchTree() { delete_tree(root); }
+		~BinarySearchTree() { _delete_tree(root); delete _end_node; }
 
-		void				print() const { tree_visit(root); std::cout << std::endl; } // to delete
-
-		value_type			min() const { return *min_in_tree(root)->data; }
-		value_type			max() const { return *max_in_tree(root)->data; }
+		node				min() const
+		{
+			if (!_size)
+				return _end_node;
+			return _min(root);
+		}
+		node				max() const
+		{
+			if (!_size)
+				return _end_node;
+			return _max(root);
+		}
 		size_type			size() const { return _size; }
 		bool				empty() const { return !_size; }
-		void				erase(const value_type& val) { delete_in_tree(root, val) ;}
-
+		void				erase(const value_type& val) { _delete(root, val); }
+		node				get_end_node() const { return _end_node; }
 		node				add_node(const value_type &val)
 		{
 			node n = new BinaryNode<T, Alloc>(val);
@@ -109,89 +119,131 @@ namespace	ft
 				root = n;
 				++_size;
 			}
-			else if (insert_node(root, n))
+			else if (_insert(root, n))
 				++_size;
 			return n;
 		}
-
 		pointer				find(const value_type& val) const
 		{
-			node			n = find_in_tree(root, val);
+			node			n = _find(root, val);
 			if (!n)
 				return NULL;
 			return n->data;
 		}
-
+		node				predecessor(pointer ptr) const
+		{
+			node			pred = NULL;
+			node			n;
+			if (!ptr || ptr == root->data)
+				return NULL;
+			if ((n = _get_node(root, ptr)))
+			 	pred = _predecessor(root, n);
+			return pred;
+		}
+		node				increm(node n)
+		{
+			if (n == _end_node)
+				return _end_node->left;
+			return _increm(predecessor(n->data), n);
+		}
+		node				decrem(node n)
+		{
+			if (n == _end_node)
+				return _max(root);
+			return _decrem(predecessor(n->data), n);
+		}
 	private :
 		node			root;
 		size_type		_size;
 		value_compare	_comp;
+		node			_end_node;
 
-		bool				insert_node(node curr, node n)
+		node				_increm(node pred, node n)
+		{
+			if (n == _max(root))
+				return _end_node;
+			if (n->right)
+				return _min(n->right);
+			else if (_comp(*pred->data, *n->data))
+				return _increm(predecessor(pred->data), n);
+			return pred;
+		}
+		node				_decrem(node pred, node n)
+		{
+			if (n == _min(root))
+				return NULL;
+			if (n->left)
+				return _max(n->left);
+			else if (_comp(*n->data, *pred->data))
+				return _decrem(predecessor(pred->data), n);
+			return pred;
+		}
+		void				_set_end_node()
+		{
+			_end_node = new BinaryNode<value_type, Alloc>(value_type());
+		}
+		bool				_insert(node curr, node n)
 		{
 			if (!_comp(*n->data, *curr->data) && !_comp(*curr->data, *n->data)) // Equal
 			{
 				delete n;
 				return false;
 			}
-			if (_comp(*n->data, *curr->data)) // Less
+			if (_comp(*n->data, *curr->data))
 			{
 				if (curr->left)
-					return insert_node(curr->left, n);
+					return _insert(curr->left, n);
 				else
 					curr->left = n;
 			}
-			else if (_comp(*curr->data, *n->data)) // More
+			else if (_comp(*curr->data, *n->data))
 			{
 				if (curr->right)
-					return insert_node(curr->right, n);
+					return _insert(curr->right, n);
 				else
+				{
 					curr->right = n;
+					_end_node->right = n;
+				}
 			}
 			return true;
 		}
-		void				delete_tree(node curr)
+		void				_delete_tree(node curr)
 		{
 			if (!curr)
 				return ;
 			if (curr->left)
-				delete_tree(curr->left);
+				_delete_tree(curr->left);
 			if (curr->right)
-				delete_tree(curr->right);
+				_delete_tree(curr->right);
 			delete curr;
 		}
-		void				tree_visit(node curr) const // To delete
+		node				_find(const node curr, const value_type& val) const
 		{
-			if (curr->left)
-				tree_visit(curr->left);
-			std::cout << curr->data->first << " " << curr->data->second << std::endl;
-			if (curr->right)
-				tree_visit(curr->right);
-		}
-		node				find_in_tree(const node curr, const value_type& val) const
-		{
+			if (!curr)
+				return NULL;
 			if (!_comp(val, *curr->data) && !_comp(*curr->data, val)) // Equal
 				return curr;
-			else if (_comp(val, *curr->data)) // Less
+			else if (_comp(val, *curr->data))
 			{
 				if (curr->left)
-					return find_in_tree(curr->left, val);
+					return _find(curr->left, val);
 			}
-			else if (_comp(*curr->data, val)) // More
+			else if (_comp(*curr->data, val))
 			{
 				if (curr->right)
-					return find_in_tree(curr->right, val);
+					return _find(curr->right, val);
 			}
 			return NULL;
 		}
-		node				delete_in_tree(node curr, const value_type& val)
+		node				_delete(node curr, const value_type& val)
 		{
 			if (!curr)
 				return curr;
 			if (_comp(val, *curr->data)) // Less
-				curr->left = delete_in_tree(curr->left, val);
+				curr->left = _delete(curr->left, val);
 			else if (_comp(*curr->data, val)) // More
-				curr->right = delete_in_tree(curr->right, val);
+				curr->right = _delete(curr->right, val);
 			else
 			{
 				if (!curr->left)
@@ -206,23 +258,49 @@ namespace	ft
 					delete curr;
 					return tmp;
 				}
-				node		tmp = min_in_tree(curr->right);
+				node		tmp = _min(curr->right);
 				*curr->data = *tmp->data;
-				curr->right = delete_in_tree(curr->right, val);
+				curr->right = _delete(curr->right, val);
 			}
 			return curr;
 		}
-		node				min_in_tree(const node curr) const
+		node				_min(const node curr) const
 		{
 			if (curr->left)
-				return min_in_tree(curr->left);
+				return _min(curr->left);
 			return curr;
 		}
-		node				max_in_tree(const node curr) const
+		node				_max(const node curr) const
 		{
 			if (curr->right)
-				return max_in_tree(curr->right);
+				return _max(curr->right);
 			return curr;
+		}
+		node				_get_node(const node curr, const pointer ptr) const
+		{
+			if (curr->data == ptr)
+				return curr;
+			else if (_comp(*ptr, *curr->data))
+			{
+				if (curr->left)
+					return _get_node(curr->left, ptr);
+			}
+			else if (curr->right)
+				return _get_node(curr->right, ptr);
+			return NULL;
+		}
+		node				_predecessor(const node curr, const node n) const
+		{
+			if (curr->right == n || curr->left == n)
+				return curr;
+			else if (_comp(*n->data, *curr->data))
+			{
+				if (curr->left)
+					return _predecessor(curr->left, n);
+			}
+			else if (curr->right)
+				return _predecessor(curr->right, n);
+			return NULL;
 		}
 	};
 };

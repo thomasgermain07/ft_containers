@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/10 23:37:00 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/11 16:02:49 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,27 +108,35 @@ namespace	ft
 		}
 		size_type			size() const { return _size; }
 		bool				empty() const { return !_size; }
-		void				erase(const value_type& val) { _delete(root, val); }
-		node				get_end_node() const { return _end_node; }
-		node				add_node(const value_type &val)
+		void				erase(const value_type& val)
 		{
-			node n = new BinaryNode<T, Alloc>(val);
+			if (_delete(root, val))
+				--_size;
+		}
+		node				get_end_node() const { return _end_node; }
 
+		std::pair<node, bool>		add_node(const value_type &val)
+		{
+			node 					n = new BinaryNode<T, Alloc>(val);
+			std::pair<node, bool>	ret(n, false);
 			if (!root)
 			{
 				root = n;
 				++_size;
+				ret.second = true;
+				return ret;
 			}
-			else if (_insert(root, n))
-				++_size;
-			return n;
+			ret.second = _insert(root, n);
+			if (!ret.second)
+				ret.first = _find(root, val);
+			return ret;
 		}
-		pointer				find(const value_type& val) const
+		node				find(const value_type& val) const
 		{
 			node			n = _find(root, val);
 			if (!n)
 				return NULL;
-			return n->data;
+			return n;
 		}
 		node				predecessor(pointer ptr) const
 		{
@@ -140,13 +148,13 @@ namespace	ft
 			 	pred = _predecessor(root, n);
 			return pred;
 		}
-		node				increm(node n)
+		node				increm(node n) const
 		{
 			if (n == _end_node)
 				return _end_node->left;
 			return _increm(predecessor(n->data), n);
 		}
-		node				decrem(node n)
+		node				decrem(node n) const
 		{
 			if (n == _end_node)
 				return _max(root);
@@ -158,7 +166,7 @@ namespace	ft
 		value_compare	_comp;
 		node			_end_node;
 
-		node				_increm(node pred, node n)
+		node				_increm(node pred, node n) const
 		{
 			if (n == _max(root))
 				return _end_node;
@@ -168,7 +176,7 @@ namespace	ft
 				return _increm(predecessor(pred->data), n);
 			return pred;
 		}
-		node				_decrem(node pred, node n)
+		node				_decrem(node pred, node n) const
 		{
 			if (n == _min(root))
 				return NULL;
@@ -259,7 +267,7 @@ namespace	ft
 					return tmp;
 				}
 				node		tmp = _min(curr->right);
-				*curr->data = *tmp->data;
+				curr->data = tmp->data;
 				curr->right = _delete(curr->right, val);
 			}
 			return curr;

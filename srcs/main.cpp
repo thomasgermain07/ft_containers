@@ -6,13 +6,15 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/10 23:33:21 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/11 16:20:18 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <algorithm>
 #include "test_header.hpp"
+#include <list>
+#include "../templates/list.hpp"
 #include <map>
 #include "../templates/map.hpp"
 #include "../templates/bst.hpp"
@@ -55,31 +57,13 @@ void		print_map(T const &m)
 
 void		test_func()
 {
-	ft::map<int, std::string>		m;
-
-	m[44] = "Challa je suis un génie";
-	m[15] = "bonsoir";
-	m[8] = "bonsoir ici";
-	m[17] = "salut toi";
-	m.insert(42, "best school");
-	m.insert(10, "salut");
-	m.insert(58, "Patrick Balkani");
-	m.insert(22, "Michel vedette");
-	m[50] = "Je m'aime";
-	m[53] = "Je m'aime encore plus";
-	m[63] = "final";
-
-	ft::map<int, std::string>::iterator		it;
-	for (it = m.begin(); it != m.end(); ++it)
-		std::cout << it->first << " " << it->second << std::endl;
-}
-
-void		test_real_func()
-{
 	typedef std::pair<int, std::string>	p;
+	// typedef ft::map<int, std::string>::iterator iterator;
+	typedef ft::map<int, std::string>::const_iterator const_iterator;
+	// typedef	std::pair<iterator, bool>	p_ret;
 
-	std::map<int, std::string>		m;
-
+	ft::map<int, std::string>		m;
+	m[44] = "Challa je suis un génie";
 	m[15] = "bonsoir";
 	m[8] = "bonsoir ici";
 	m[17] = "salut toi";
@@ -87,14 +71,25 @@ void		test_real_func()
 	m.insert(p(10, "salut"));
 	m.insert(p(58, "Patrick Balkani"));
 	m.insert(p(22, "Michel vedette"));
-	m[44] = "Challa je suis un génie";
+
+	m[14] = "Ligne 14";
 	m[50] = "Je m'aime";
 	m[53] = "Je m'aime encore plus";
 	m[63] = "final";
 
-	std::map<int, std::string>::iterator		it;
-	for (it = m.begin(); it != m.end(); ++it)
-		std::cout << it->first << " " << it->second << std::endl;
+	const_iterator it = m.lower_bound(8);
+	std::cout << it->first << " " << it->second << std::endl;
+
+	it = m.upper_bound(63);
+	std::cout << it->first << " " << it->second << std::endl;
+	std::cout << std::endl;
+	print_map(m);
+}
+
+void		test_real_func()
+{
+	// typedef std::pair<int, std::string>	p;
+
 }
 
 int			main()

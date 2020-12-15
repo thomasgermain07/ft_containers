@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/08 14:42:31 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/15 15:12:38 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace	ft
 			_delete_array();
 			_init_array(x.capacity());
 			_size = x.size();
-			for (int i = 0; i < _size; ++i)
+			for (size_type i = 0; i < _size; ++i)
 				_array[i] = x._array[i];
 			return *this;
 		}
@@ -69,8 +69,8 @@ namespace	ft
 
 		size_type					size() const { return _size; }
 		size_type					capacity() const { return _capacity; }
-		bool						empty() { return !_size; }
-		size_type					max_size() { return _allocator.max_size(); }
+		bool						empty() const { return !_size; }
+		size_type					max_size() const { return _allocator.max_size(); }
 		reference					front() { return operator[](0); }
 		const_reference				front() const { return operator[](0); }
 		reference					back() { return operator[](_size - 1); }
@@ -195,7 +195,7 @@ namespace	ft
 		void				_init_array(size_type n = 0, value_type const &val = value_type())
 		{
 			_array = _allocator.allocate(n);
-			for (size_t i = 0; i < n; ++i)
+			for (size_type i = 0; i < n; ++i)
 				_allocator.construct(_array + i, val);
 			_size = n;
 			_capacity = n;
@@ -214,7 +214,7 @@ namespace	ft
 		void				_add_elem_at(size_type index, const value_type& val, size_type n_elem = 1)
 		{
 			_move_back_from(index, n_elem);
-			for (int i = 0; i < n_elem; ++i)
+			for (size_type i = 0; i < n_elem; ++i)
 				_allocator.construct(_array + (index + i), val);
 			_size += n_elem;
 		}
@@ -237,7 +237,7 @@ namespace	ft
 		}
 		void				_delete_elem(size_type n = 1)
 		{
-			for (int i = 0; i < n; ++i)
+			for (size_type i = 0; i < n; ++i)
 			{
 				_allocator.destroy(_array + (_size - i));
 				--_size;
@@ -245,7 +245,7 @@ namespace	ft
 		}
 		void				_delete_elem_at(size_type index, size_type n = 1)
 		{
-			for (int i = 0; i < n; ++i)
+			for (size_type i = 0; i < n; ++i)
 			{
 				_allocator.destroy(_array + (index + i));
 				--_size;
@@ -260,7 +260,7 @@ namespace	ft
 			if (!new_capacity)
 				new_capacity = _capacity * 2;
 			_new_array = _allocator.allocate(new_capacity);
-			for (int i = 0; i < _size; ++i)
+			for (size_type i = 0; i < _size; ++i)
 				_allocator.construct(_new_array + i, _array[i]);
 			_delete_array();
 			_capacity = new_capacity;
@@ -280,12 +280,12 @@ namespace	ft
 		}
 		void				_move_back_from(size_type index, size_type n = 1)
 		{
-			for (int _cpy = _size + n; _cpy > index; --_cpy)
+			for (size_type _cpy = _size + n; _cpy > index; --_cpy)
 				_allocator.construct(_array + _cpy, _array[_cpy - n]);
 		}
 		void				_move_front_from(size_type index, size_type n = 1)
 		{
-			for (int _cpy = index; _cpy < _size + n; ++_cpy)
+			for (size_type _cpy = index; _cpy < _size + n; ++_cpy)
 				_allocator.construct(_array + _cpy, _array[_cpy + n]);
 		}
 		template<class X>
@@ -304,7 +304,7 @@ namespace	ft
 	{
 		if (lhs.size() != rhs.size())
 			return false;
-		for (int i = 0; i < lhs.size(); ++i)
+		for (size_t i = 0; i < lhs.size(); ++i)
 			if (!(lhs[i] == rhs[i]))
 				return false;
 		return true;
@@ -314,7 +314,7 @@ namespace	ft
 	{
 		if (lhs.size() != rhs.size())
 			return lhs.size() < rhs.size();
-		for (int i = 0; i < lhs.size(); ++i)
+		for (size_t i = 0; i < lhs.size(); ++i)
 			if (lhs[i] != rhs[i])
 				return lhs[i] < rhs[i];
 		return false;

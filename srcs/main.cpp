@@ -6,18 +6,17 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/11 16:20:18 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/15 15:50:13 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <algorithm>
 #include "test_header.hpp"
+#include <queue>
+#include <vector>
 #include <list>
-#include "../templates/list.hpp"
-#include <map>
-#include "../templates/map.hpp"
-#include "../templates/bst.hpp"
+#include "../templates/queue.hpp"
 #include <utility>
 
 void		print_header(std::string msg)
@@ -57,39 +56,58 @@ void		print_map(T const &m)
 
 void		test_func()
 {
-	typedef std::pair<int, std::string>	p;
-	// typedef ft::map<int, std::string>::iterator iterator;
-	typedef ft::map<int, std::string>::const_iterator const_iterator;
-	// typedef	std::pair<iterator, bool>	p_ret;
+	ft::queue<int>			s;
+	ft::queue<int>			s2;
 
-	ft::map<int, std::string>		m;
-	m[44] = "Challa je suis un génie";
-	m[15] = "bonsoir";
-	m[8] = "bonsoir ici";
-	m[17] = "salut toi";
-	m.insert(p(42, "best school"));
-	m.insert(p(10, "salut"));
-	m.insert(p(58, "Patrick Balkani"));
-	m.insert(p(22, "Michel vedette"));
+	if (s == s2)
+		std::cout << "s == s2" << std::endl;
+	std::cout << std::boolalpha << "s is empty : " << s.empty() << std::endl;
 
-	m[14] = "Ligne 14";
-	m[50] = "Je m'aime";
-	m[53] = "Je m'aime encore plus";
-	m[63] = "final";
-
-	const_iterator it = m.lower_bound(8);
-	std::cout << it->first << " " << it->second << std::endl;
-
-	it = m.upper_bound(63);
-	std::cout << it->first << " " << it->second << std::endl;
+	s.push(15);
+	s2.push(20);
+	if (s != s2)
+		std::cout << "s != s2" << std::endl;
+	if (s < s2)
+		std::cout << "s < s2" << std::endl;
+	if (s2 > s)
+		std::cout << "s2 > s" << std::endl;
+	for (int i = 0; i < 15; ++i)
+		s.push(rand() % 10);
+	std::cout << "size : " << s.size() << std::endl;
+	while (!s.empty())
+	{
+		std::cout << s.front() << " ";
+		s.pop();
+	}
 	std::cout << std::endl;
-	print_map(m);
 }
 
 void		test_real_func()
 {
-	// typedef std::pair<int, std::string>	p;
+	std::queue<int>			s;
+	std::queue<int>			s2;
 
+	if (s == s2)
+		std::cout << "s == s2" << std::endl;
+	std::cout << std::boolalpha << "s is empty : " << s.empty() << std::endl;
+
+	s.push(15);
+	s2.push(20);
+	if (s != s2)
+		std::cout << "s != s2" << std::endl;
+	if (s < s2)
+		std::cout << "s < s2" << std::endl;
+	if (s2 > s)
+		std::cout << "s2 > s" << std::endl;
+	for (int i = 0; i < 15; ++i)
+		s.push(rand() % 10);
+	std::cout << "size : " << s.size() << std::endl;
+	while (!s.empty())
+	{
+		std::cout << s.front() << " ";
+		s.pop();
+	}
+	std::cout << std::endl;
 }
 
 int			main()

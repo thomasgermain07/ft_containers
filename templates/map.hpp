@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 14:02:19 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/11 16:19:23 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/14 17:47:09 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ namespace	ft
 				return comp(x.first, y.first);
 			}
 		};
-		typedef ft::MapIterator<value_type, value_compare, Alloc>				iterator;
-		typedef ft::ConstMapIterator<value_type, value_compare, Alloc>			const_iterator;
+
+		typedef MapIterator<value_type, value_compare, Alloc>				iterator;
+		typedef ConstMapIterator<value_type, value_compare, Alloc>			const_iterator;
+		typedef	ReverseMapIterator<value_type, value_compare, Alloc>		reverse_iterator;
+		typedef	ConstReverseMapIterator<value_type, value_compare, Alloc>	const_reverse_iterator;
 
 		typedef BinarySearchTree<value_type, value_compare, Alloc> 	tree;
 		typedef BinaryNode<value_type, Alloc>*						node;
@@ -84,6 +87,11 @@ namespace	ft
 		iterator			end() { return iterator(bst.get_end_node(), &bst); }
 		const_iterator		end() const { return const_iterator(bst.get_end_node(), &bst); }
 
+		reverse_iterator		rbegin() { return reverse_iterator(end()); }
+		const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
+		reverse_iterator		rend() { return reverse_iterator(begin()); }
+		const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
+
 		size_type			size() const { return bst.size(); }
 		size_type			max_size() const { return _allocator.max_size() / sizeof(node); }
 
@@ -104,16 +112,23 @@ namespace	ft
 				bst.add_node(*first++);
 		}
 
-		void				erase(iterator position){ bst.erase(*position->data); }
+		void				erase(iterator position) { bst.erase(*position); }
 		void				erase(iterator first, iterator last)
 		{
-			while (first != last)
-				bst.erase(*(first++)->data);
+			key_type		_stop_key = last->first;
+
+			while (first->first != _stop_key)
+			{
+				iterator		tmp = first;
+				key_type		_kt = (++tmp)->first;
+				bst.erase(*first);
+				first = find(_kt);
+			}
 		}
 		size_type			erase(const key_type& k)
 		{
 			size_type		_save = bst.size();
-			bst.erase(value_type(k, mapped_type())); // Revoir toute la fonction _delete dans bst.hpp
+			bst.erase(value_type(k, mapped_type()));
 			return _save - bst.size();
 		}
 
@@ -137,34 +152,65 @@ namespace	ft
 
 		iterator			lower_bound(const key_type& k)
 		{
-			iterator		it = find(k);
-			if (it != end())
-				return ++it;
-			return end();
-		}
+			iterator		it = begin();
+			value_type		val = value_type(k, mapped_type());
 
+			while (it != end())
+			{
+				if (!_compare(*it, val))
+					return it;
+				++it;
+			}
+			return it;
+		}
 		const_iterator		lower_bound(const key_type& k) const
 		{
-			const_iterator		it = find(k);
-			if (it != end())
-				return ++it;
-			return end();
+			const_iterator	it = begin();
+			value_type		val = value_type(k, mapped_type());
+
+			while (it != end())
+			{
+				if (!_compare(*it, val))
+					return it;
+				++it;
+			}
+			return it;
 		}
 
 		iterator			upper_bound(const key_type& k)
 		{
-			iterator		it = find(k);
-			if (it != end())
-				return --it;
-			return end();
-		}
+			iterator		it = begin();
+			value_type		val = value_type(k, mapped_type());
 
+			while (it != end())
+			{
+				if (_compare(val, *it))
+					return it;
+				++it;
+			}
+			return it;
+		}
 		const_iterator		upper_bound(const key_type& k) const
 		{
-			const_iterator		it = find(k);
-			if (it != end())
-				return --it;
-			return end();
+			const_iterator	it = begin();
+			value_type		val = value_type(k, mapped_type());
+
+			while (it != end())
+			{
+				if (_compare(val, *it))
+					return it;
+				++it;
+			}
+			return it;
+		}
+
+		std::pair<iterator, iterator>					equal_range(const key_type& k)
+		{
+			return std::pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+		}
+		std::pair<const_iterator, const_iterator>		equal_range(const key_type& k) const
+		{
+			return std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
 		}
 
 		size_type			count(const key_type& k) const
@@ -173,6 +219,9 @@ namespace	ft
 				return 1;
 			return 0;
 		}
+
+		void				clear() { bst.clear(); }
+		void				swap(map& x) { bst.swap(x.bst); }
 
 	private :
 		allocator_type		_allocator;

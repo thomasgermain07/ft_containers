@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/11 16:02:49 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/14 15:34:17 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 # include <fstream>
 # include <memory>
+# include "structs.hpp"
 
 namespace	ft
 {
@@ -62,6 +63,14 @@ namespace	ft
 			return n;
 		}
 
+		void				copy_data(pointer _data)
+		{
+			allocator_type		alloc;
+
+			alloc.destroy(data);
+			alloc.construct(data, *_data);
+		}
+
 		pointer				data;
 		node				left;
 		node				right;
@@ -94,6 +103,12 @@ namespace	ft
 		}
 		~BinarySearchTree() { _delete_tree(root); delete _end_node; }
 
+		void				clear()
+		{
+			_delete_tree(root);
+			_size = 0;
+			root = NULL;
+		}
 		node				min() const
 		{
 			if (!_size)
@@ -113,7 +128,7 @@ namespace	ft
 			if (_delete(root, val))
 				--_size;
 		}
-		node				get_end_node() const { return _end_node; }
+		node						get_end_node() const { return _end_node; }
 
 		std::pair<node, bool>		add_node(const value_type &val)
 		{
@@ -129,6 +144,8 @@ namespace	ft
 			ret.second = _insert(root, n);
 			if (!ret.second)
 				ret.first = _find(root, val);
+			else
+				++_size;
 			return ret;
 		}
 		node				find(const value_type& val) const
@@ -160,21 +177,28 @@ namespace	ft
 				return _max(root);
 			return _decrem(predecessor(n->data), n);
 		}
+		void				swap(BinarySearchTree &ref)
+		{
+			_swap(root, ref.root);
+			_swap(_size, ref._size);
+			_swap(_comp, ref._comp);
+			_swap(_end_node, ref._end_node);
+		}
 	private :
 		node			root;
 		size_type		_size;
 		value_compare	_comp;
 		node			_end_node;
 
-		node				_increm(node pred, node n) const
+		node				_increm(node next, node n) const
 		{
 			if (n == _max(root))
 				return _end_node;
 			if (n->right)
 				return _min(n->right);
-			else if (_comp(*pred->data, *n->data))
-				return _increm(predecessor(pred->data), n);
-			return pred;
+			else if (_comp(*next->data, *n->data))
+				return _increm(predecessor(next->data), n);
+			return next;
 		}
 		node				_decrem(node pred, node n) const
 		{
@@ -267,8 +291,8 @@ namespace	ft
 					return tmp;
 				}
 				node		tmp = _min(curr->right);
-				curr->data = tmp->data;
-				curr->right = _delete(curr->right, val);
+				curr->copy_data(tmp->data);
+				curr->right = _delete(curr->right, *curr->data);
 			}
 			return curr;
 		}

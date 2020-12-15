@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 15:10:23 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/11 15:14:06 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/14 16:23:34 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace	ft
 		MapIterator() : _node(NULL), _tree(NULL) {}
 		MapIterator(node n, tree* t) : _node(n), _tree(t) {}
 		MapIterator(const MapIterator& ref) { *this = ref; }
-		MapIterator			&operator=(const MapIterator& ref)
+		MapIterator				&operator=(const MapIterator& ref)
 		{
 			_node = ref._node;
 			_tree = ref._tree;
@@ -100,6 +100,83 @@ namespace	ft
 	private :
 		node			_node;
 		tree*			_tree;
+	};
+
+	template<class T, class value_compare, class Alloc>
+	class			ConstReverseMapIterator;
+
+	template<class T, class value_compare, class Alloc>
+	class			ReverseMapIterator
+	{
+	public :
+		typedef T													value_type;
+		typedef MapIterator<T, value_compare, Alloc>				iterator;
+		typedef typename iterator::pointer_type						pointer_type;
+		typedef typename iterator::reference_type					reference_type;
+		typedef typename iterator::iterator_category				iterator_category;
+		typedef typename iterator::difference_type					difference_type;
+
+		ReverseMapIterator() {}
+		ReverseMapIterator(const iterator& it) : _it(it) {}
+		ReverseMapIterator(const ReverseMapIterator& ref) { *this = ref; }
+		ReverseMapIterator				&operator=(const ReverseMapIterator& ref)
+		{
+			_it = ref._it;
+			return *this;
+		}
+		~ReverseMapIterator() {}
+
+		operator ConstReverseMapIterator<T, value_compare, Alloc>() const { return ConstReverseMapIterator<T, value_compare, Alloc>(_it); }
+
+		pointer_type			operator->() const { iterator _tmp(_it); return (--_tmp).operator->(); }
+		reference_type			operator*() const { iterator _tmp(_it); return (--_tmp).operator*(); }
+
+		ReverseMapIterator				&operator++() { --_it; return *this; }
+		ReverseMapIterator				&operator--() { ++_it; return *this; }
+		ReverseMapIterator				operator++(int) { ReverseMapIterator _tmp(*this); --_it; return _tmp; }
+		ReverseMapIterator				operator--(int) { ReverseMapIterator _tmp(*this); ++_it; return _tmp; }
+
+		bool					operator==(ReverseMapIterator const &ref) const { return _it == ref._it; }
+		bool					operator!=(ReverseMapIterator const &ref) const { return !(*this == ref); }
+
+	private :
+		iterator		_it;
+	};
+
+	template<class T, class value_compare, class Alloc>
+	class			ConstReverseMapIterator
+	{
+	public :
+		typedef T													value_type;
+		typedef ConstMapIterator<T, value_compare, Alloc>			iterator;
+		typedef typename iterator::pointer_type						pointer_type;
+		typedef typename iterator::reference_type					reference_type;
+		typedef typename iterator::iterator_category				iterator_category;
+		typedef typename iterator::difference_type					difference_type;
+
+		ConstReverseMapIterator() {}
+		ConstReverseMapIterator(const iterator& it) : _it(it) {}
+		ConstReverseMapIterator(const ConstReverseMapIterator& ref) { *this = ref; }
+		ConstReverseMapIterator			&operator=(const ConstReverseMapIterator& ref)
+		{
+			_it = ref._it;
+			return *this;
+		}
+		~ConstReverseMapIterator() {}
+
+		pointer_type					operator->() const { iterator _tmp = _it; return (--_tmp).operator->(); }
+		reference_type					operator*() const { iterator _tmp = _it; return (--_tmp).operator*(); }
+
+		ConstReverseMapIterator			&operator++() { --_it; return *this; }
+		ConstReverseMapIterator			&operator--() { ++_it; return *this; }
+		ConstReverseMapIterator			operator++(int) { ConstReverseMapIterator _tmp(*this); --_it; return _tmp; }
+		ConstReverseMapIterator			operator--(int) { ConstReverseMapIterator _tmp(*this); ++_it; return _tmp; }
+
+		bool		operator==(ConstReverseMapIterator const &ref) const { return _it == ref._it; }
+		bool		operator!=(ConstReverseMapIterator const &ref) const { return !(*this == ref); }
+
+	private :
+		iterator		_it;
 	};
 }
 

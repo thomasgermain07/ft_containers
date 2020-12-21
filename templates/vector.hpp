@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 14:10:43 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 14:17:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ namespace	ft
 			size_type	_pos = _find_elem(position);
 
 			if (n + _size > _capacity)
-				_extend_capacity(_size + n);
+				_extend_capacity(_size + n + 1);
 			_add_elem_at(_pos, val, n);
 		}
 		template<class InputIterator>

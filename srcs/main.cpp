@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 14:00:43 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 14:21:41 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,6 @@ public :
 int			main()
 {
 	srand(time(NULL));
-
-	// ft::vector<std::string>			l;
-	// std::vector<std::string>			sl;
-	// l.assign((size_t)10, "salut");
-	// sl.assign((size_t)10, "salut");
-	// print(l);
-	// print(sl);
-	// ft::vector<std::string>			l2;
-	// std::vector<std::string>			sl2;
-	// l2.assign(++l.begin(), --l.end());
-	// sl2.assign(++sl.begin(), --sl.end());
-	// print(l2);
-	// print(sl2);
-	// return 0;
 
 	print_header("Welcome in ft_container correction");
 	while (1)

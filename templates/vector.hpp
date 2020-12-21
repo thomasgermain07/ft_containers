@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 13:56:21 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 14:10:43 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,8 @@ namespace	ft
 			_new_array = _allocator.allocate(new_capacity);
 			for (size_type i = 0; i < _size; ++i)
 				_allocator.construct(_new_array + i, _array[i]);
+			for (size_type i = _size; i < new_capacity; ++i)
+				_allocator.construct(_new_array + i, value_type());
 			_delete_array();
 			_capacity = new_capacity;
 			_array = _new_array;

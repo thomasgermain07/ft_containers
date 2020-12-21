@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/16 15:52:37 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 13:56:21 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ namespace	ft
 		}
 		void				_move_back_from(size_type index, size_type n = 1)
 		{
-			for (size_type _cpy = _size + n; _cpy > index; --_cpy)
+			for (size_type _cpy = _size + n; _cpy > index - 1; --_cpy)
 				_allocator.construct(_array + _cpy, _array[_cpy - n]);
 		}
 		void				_move_front_from(size_type index, size_type n = 1)

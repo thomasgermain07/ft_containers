@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/15 15:12:38 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/16 15:52:37 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,12 @@ namespace	ft
 		const_reference				front() const { return operator[](0); }
 		reference					back() { return operator[](_size - 1); }
 		const_reference				back() const { return operator[](_size - 1); }
-		void						pop_back() { _delete_elem(); }
+		void						pop_back()
+		{
+			if (!_size)
+				return ;
+			_delete_elem();
+		}
 		void						clear() { _delete_elem(_size); }
 
 		reference					operator[](size_type n) { return *(_array + n); }

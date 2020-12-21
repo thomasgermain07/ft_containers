@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 14:02:19 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/14 17:47:09 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 01:13:49 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ namespace	ft
 		const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
 
 		size_type			size() const { return bst.size(); }
+		bool				empty() { return bst.empty(); }
 		size_type			max_size() const { return _allocator.max_size() / sizeof(node); }
 
 		std::pair<iterator, bool>		insert(const value_type& val)
@@ -102,7 +103,7 @@ namespace	ft
 		}
 		iterator						insert(iterator position, const value_type& val)
 		{
-			(void)position; // check later how to do it;
+			(void)position;
 			return insert(val).first;
 		}
 		template<class InputIterator>

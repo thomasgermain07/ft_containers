@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/14 15:34:17 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/17 19:04:44 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ namespace	ft
 				_delete_tree(root);
 			if (ref.root)
 				root = ref.root->clone();
+			_set_end_node();
+			_end_node->right = max();
 			return *this;
 		}
 		~BinarySearchTree() { _delete_tree(root); delete _end_node; }

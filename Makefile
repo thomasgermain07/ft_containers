@@ -2,7 +2,11 @@ NAME = a.out
 SRCSDIR = srcs
 OBJSDIR = .objs
 SRCS = main.cpp\
-		ListTest.cpp
+		ListTest.cpp\
+		VectorTest.cpp\
+		QueueTest.cpp\
+		StackTest.cpp\
+		MapTest.cpp
 
 OBJS = $(addprefix $(OBJSDIR)/, $(SRCS:.cpp=.o))
 DPDCS = $(OBJS:.o=.d)

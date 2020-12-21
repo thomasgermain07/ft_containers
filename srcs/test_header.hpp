@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:37:41 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/10 22:54:31 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/17 19:13:48 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define TEST_HEADER
 
 # include <iostream>
-# include "../templates/map.hpp"
 
 # define RESET "\e[0m"
 # define BOLD "\e[1m"
@@ -47,9 +46,22 @@ void		print(T const &cont)
 	std::cout << "cont size : " << RESET << cont.size() << std::endl;
 }
 
+template<class T>
+void		print_map(T const &cont)
+{
+	typename T::const_iterator 		it;
+	for (it = cont.begin(); it != cont.end(); ++it)
+		std::cout << it->first << " " << it->second << std::endl;
+	std::cout << "cont size : " << RESET << cont.size() << std::endl;
+}
+
 void					print_header(std::string msg);
 void					print_small_header(std::string msg);
 void					print_msg(std::string msg);
 void					ListTest();
+void					VectorTest();
+void					QueueTest();
+void					StackTest();
+void					MapTest();
 
 #endif

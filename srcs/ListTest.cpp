@@ -6,16 +6,13 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:26:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/02 14:09:26 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 02:05:36 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <list>
-#include <vector>
 #include <iterator>
 #include "../templates/list.hpp"
-#include "../templates/listIterator.hpp"
-#include "../templates/structs.hpp"
 #include "test_header.hpp"
 
 template<class T>
@@ -28,7 +25,7 @@ static void			compare_with_real(std::string category, ft::list<T> const &l, std:
 		std::cerr << WRONG << RED << " list size isn't the same" << RESET << std::endl;
 		error = true;
 	}
-	typename ft::list<T>::const_iterator		it = l.begin();
+	typename ft::list<T>::const_iterator	it = l.begin();
 	typename std::list<T>::const_iterator	it2 = l2.begin();
 	while (!error && it != l.end())
 	{
@@ -40,14 +37,12 @@ static void			compare_with_real(std::string category, ft::list<T> const &l, std:
 		++it;
 		++it2;
 	}
-	print(l); // to del
-	print(l2); // to del
 	if (!error)
 		std::cout << VALID << GREEN << BOLD << category << " test passed\n" << RESET << std::endl;
 	else
 	{
-		// print(l);
-		// print(l2);
+		print(l);
+		print(l2);
 		std::cerr << WRONG << RED << BOLD << category << " test failed" << RESET << std::endl;
 	}
 }
@@ -516,4 +511,6 @@ void				ListTest()
 	remove_test();
 	remove_if_test();
 	unique_sort_merge_reverse_test();
+	std::cout << "Press any key to go back to main menu" << std::endl;
+	std::cin.get();
 }

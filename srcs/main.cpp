@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 08:49:25 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 02:09:03 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 02:18:06 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int			main()
 		print_small_header("2 : Vector");
 		print_small_header("3 : Map");
 		print_small_header("4 : Stack");
-		print_small_header("5: Queue");
-		print_small_header("6: Leave");
+		print_small_header("5 : Queue");
+		print_small_header("6 : Leave");
 		int			index = 0;
 		std::cin >> index;
 		std::cin.clear();

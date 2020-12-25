@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.hpp                                        :+:      :+:    :+:   */
+/*   utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 14:29:00 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/02 14:01:46 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/24 00:15:58 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS
-# define STRUCTS
+#ifndef UTILS
+# define UTILS
 
 # include <iostream>
 
 namespace	ft
 {
-	template<class T>
-	struct 			_node
-	{
-		T				*data;
-		_node			*next;
-		_node			*prev;
-	};
 	template<typename X>
 	void					_swap(X &c, X &d)
 	{
@@ -34,7 +27,7 @@ namespace	ft
 	template<class T>
 	bool		basic_comp(T a, T b)
 	{
-		return (a <= b);
+		return (a < b);
 	}
 }
 

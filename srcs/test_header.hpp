@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:37:41 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/17 19:13:48 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/24 01:18:00 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		rprint(T const &cont)
 	for (it = cont.rbegin(); it != cont.rend(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
-	std::cout << "cont size : " << RESET << cont.size() << std::endl;
+	// std::cout << "cont size : " << RESET << cont.size() << std::endl;
 }
 
 template<class T>
@@ -43,7 +43,7 @@ void		print(T const &cont)
 	for (it = cont.begin(); it != cont.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
-	std::cout << "cont size : " << RESET << cont.size() << std::endl;
+	// std::cout << "cont size : " << RESET << cont.size() << std::endl;
 }
 
 template<class T>

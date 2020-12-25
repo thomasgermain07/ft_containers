@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 14:17:04 by user42           ###   ########.fr       */
+/*   Updated: 2020/12/21 17:09:34 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ namespace	ft
 				_extend_capacity(_dist + _size);
 			_add_range_at(_pos, start, end);
 		}
-		void						erase(iterator position)
+		void						erase(iterator position) // return iterator
 		{
 			size_type		_pos = _find_elem(position);
 

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 21:26:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/21 02:05:36 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/21 16:32:35 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "test_header.hpp"
 
 template<class T>
-static void			compare_with_real(std::string category, ft::list<T> const &l, std::list<T> const &l2)
+static void			compare_with_real(std::string category, ft::list<T> const l, std::list<T> const l2)
 {
 	bool			error = false;
 	std::cout << UNDERLINE << category << " test start" << RESET << std::endl;
@@ -280,6 +280,24 @@ static void			erase_test()
 	l.erase(l.begin(), l.end());
 	sl.erase(sl.begin(), sl.end());
 	compare_with_real("Erasing from begin() to end()", l, sl);
+	l.push_front(45);
+	sl.push_front(45);
+	l.push_front(45);
+	sl.push_front(45);
+	l.push_back(45);
+	sl.push_back(45);
+	compare_with_real("Repush", l, sl);
+	l.reverse();
+	sl.reverse();
+	compare_with_real("Reverse", l, sl);
+	l.push_back(12);
+	sl.push_back(12);
+	rprint(l);
+	rprint(sl);
+	compare_with_real("push_back", l, sl);
+	l.push_front(12);
+	sl.push_front(12);
+	compare_with_real("push_front", l, sl);
 }
 
 static void			swap_test()

@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/17 19:04:44 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/24 00:13:23 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <iostream>
 # include <fstream>
 # include <memory>
-# include "structs.hpp"
+# include "utils.hpp"
 
 namespace	ft
 {

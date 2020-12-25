@@ -6,31 +6,31 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 12:08:50 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/10 23:39:55 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/24 00:13:54 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LISTITERATOR
 # define LISTITERATOR
 
-# include "structs.hpp"
+# include "utils.hpp"
 # include <cstddef>
 
 namespace	ft
 {
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ConstListIterator;
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ConstReverseListIterator;
 
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ListIterator
 	{
 	public :
 		typedef T								value_type;
 		typedef value_type*						pointer_type;
 		typedef value_type&						reference_type;
-		typedef _node<value_type>*				node;
+		typedef Node<value_type, Alloc>*		node;
 		typedef std::bidirectional_iterator_tag	iterator_category;
 		typedef std::ptrdiff_t					difference_type;
 
@@ -40,7 +40,7 @@ namespace	ft
 		~ListIterator() {}
 		ListIterator			&operator=(ListIterator const &ref) { ptr = ref.ptr; return *this; }
 
-		operator ConstListIterator<T>() const { return ConstListIterator<T>(ptr); }
+		operator ConstListIterator<T, Alloc>() const { return ConstListIterator<T, Alloc>(ptr); }
 
 		pointer_type			operator->() const { return ptr->data; }
 		reference_type			operator*() const { return *ptr->data; }
@@ -57,14 +57,14 @@ namespace	ft
 		node		ptr;
 	};
 
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ConstListIterator
 	{
 	public :
 		typedef T								value_type;
 		typedef const value_type&				reference_type;
 		typedef const value_type*				pointer_type;
-		typedef _node<value_type>*				node;
+		typedef Node<value_type, Alloc>*		node;
 		typedef std::bidirectional_iterator_tag	iterator_category;
 		typedef std::ptrdiff_t					difference_type;
 
@@ -89,11 +89,11 @@ namespace	ft
 			node	ptr;
 	};
 
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ReverseListIterator
 	{
 	public :
-		typedef ListIterator<T>							iterator;
+		typedef ListIterator<T, Alloc>					iterator;
 		typedef typename iterator::value_type			value_type;
 		typedef typename iterator::iterator_category	iterator_category;
 		typedef typename iterator::difference_type		difference_type;
@@ -106,7 +106,7 @@ namespace	ft
 		~ReverseListIterator() {}
 		ReverseListIterator		&operator=(ReverseListIterator const &ref) { _base = ref._base; return *this; }
 
-		operator ConstReverseListIterator<T>() const { return ConstReverseListIterator<T>(_base); }
+		operator ConstReverseListIterator<T, Alloc>() const { return ConstReverseListIterator<T, Alloc>(_base); }
 
 		pointer_type			operator->() const { iterator _tmp = _base; return (--_tmp).operator->(); }
 		reference_type			operator*() const { iterator _tmp = _base; return (--_tmp).operator*(); }
@@ -125,11 +125,11 @@ namespace	ft
 		iterator		_base;
 	};
 
-	template<typename T>
+	template<typename T, class Alloc>
 	class	ConstReverseListIterator
 	{
 	public :
-		typedef ConstListIterator<T>					iterator;
+		typedef ConstListIterator<T, Alloc>				iterator;
 		typedef typename iterator::value_type			value_type;
 		typedef typename iterator::iterator_category	iterator_category;
 		typedef typename iterator::difference_type		difference_type;

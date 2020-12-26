@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 11:43:56 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/25 01:13:03 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/25 17:04:02 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,22 @@ namespace	ft
 					/* *** ************************ *** */
 					/* *** Constructor / Destructor *** */
 					/* *** ************************ *** */
-		explicit list(const allocator_type &alloc = allocator_type()) : lst(alloc), _allocator(alloc) {}
-		explicit list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : lst(alloc), _allocator(alloc)
+		explicit list(const allocator_type& alloc = allocator_type()) : lst(alloc), _allocator(alloc) {}
+		explicit list(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : lst(alloc), _allocator(alloc)
 		{
 			while (n--)
 				lst.push_back(val);
 		}
 		template<class InputIterator>
-		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) : lst(alloc), _allocator(alloc)
+		list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : lst(alloc), _allocator(alloc)
 		{
 			while (first != last)
 				lst.push_back(*first++);
 		}
 		list(const list& x) :_allocator(x._allocator) { *this = x; }
-		list				&operator=(list const &ref)
+		list				&operator=(const list& x)
 		{
-			lst = ref.lst;
+			lst = x.lst;
 			return *this;
 		}
 		~list() {}
@@ -80,7 +80,7 @@ namespace	ft
 		reference				back() { return lst.back(); }
 		const_reference			back() const { return lst.back(); }
 
-		void					assign(size_type n, const value_type &val)
+		void					assign(size_type n, const value_type& val)
 		{
 			lst.clear();
 			while (n-- > 0)
@@ -93,10 +93,10 @@ namespace	ft
 			while (first != last)
 				lst.push_back(*first++);
 		}
-		void					push_front(value_type const &val) { lst.push_front(val); }
+		void					push_front(value_type const& val) { lst.push_front(val); }
 		void					pop_front() { lst.pop_front(); }
 
-		void					push_back(value_type const &val) { lst.push_back(val); }
+		void					push_back(value_type const& val) { lst.push_back(val); }
 		void					pop_back() { lst.pop_back(); }
 
 		iterator				insert(iterator position, const value_type& val)
@@ -246,10 +246,7 @@ namespace	ft
 			lst.sort(comp);
 		}
 
-		void					merge(list& x)
-		{
-			merge(x, basic_comp<value_type>);
-		}
+		void					merge(list& x) { merge(x, basic_comp<value_type>); }
 		template<class Compare>
 		void					merge(list& x, Compare comp)
 		{
@@ -275,10 +272,7 @@ namespace	ft
 			x.lst.decrease_size(x.size());
 		}
 
-		void					reverse()
-		{
-			lst.reverse();
-		}
+		void					reverse() { lst.reverse();  }
 
 	private :
 		dl_list					lst;

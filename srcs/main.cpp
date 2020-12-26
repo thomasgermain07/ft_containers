@@ -6,13 +6,13 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 18:23:38 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/25 01:09:58 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/26 23:37:33 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "test_header.hpp"
-#include "../templates/list.hpp"
+#include "../templates/vector.hpp"
 #include <vector>
 #include <list>
 
@@ -89,109 +89,24 @@ public :
 
 void		test_func()
 {
-	std::vector<int>			v;
-	v.push_back(6);
-	while (v.back())
+	ft::vector<int>			v;
+	v.push_back(20);
+	while (v.back() - 1)
 		v.push_back(v.back() - 1);
 
-	ft::list<int>		lst;
+	std::cout << "capacity " << v.capacity() << " size " << v.size() << std::endl;
+	print(v);
 
-	lst.assign(v.begin(), v.end());
-	lst.pop_front();
-	lst.push_front(42);
-	lst.pop_back();
-	lst.push_back(42);
+	v.erase(v.begin() + 6, v.begin() + 16);
 
-	lst.insert(--lst.end(), v.begin(), v.end());
-	lst.insert(lst.end(), 51);
-
-	std::list<int>		slst;
-	for (ft::list<int>::iterator it = lst.begin(); it != lst.end(); ++it)
-		slst.push_back(*it);
-
-	ft::list<int>::iterator			it = lst.begin();
-	std::list<int>::iterator		sit = slst.begin();
-
-	for (int i = 0; i < 4; ++i)
-	{
-		++it;
-		++sit;
-	}
-
-	lst.erase(++lst.begin(), --lst.end());
-	slst.erase(++slst.begin(), --slst.end());
-
-	lst.resize(10, 42);
-	slst.resize(10, 42);
-
-	lst.resize(8);
-	slst.resize(8);
-
-	ft::list<int>			lst2;
-	std::list<int>			slst2;
-
-	lst2.push_back(5);
-	slst2.push_back(5);
-
-	while (lst2.back())
-	{
-		lst2.push_back(lst2.back() - 1);
-		slst2.push_back(slst2.back() - 1);
-	}
-
-	it = lst2.begin();
-	sit = slst2.begin();
-	for (int i = 0; i < 4; ++i)
-	{
-		++it;
-		++sit;
-	}
-
-	lst.splice(lst.end(), lst2, --lst2.end());
-	slst.splice(slst.end(), slst2, --slst2.end());
-
-	std::cout << "\nlst && slst" << std::endl;
-	lst.print();
-	print(slst);
-	std::cout << "\nlst2 && slst2" << std::endl;
-	lst2.print();
-	print(slst2);
-
-
-	lst.splice(lst.end(), lst2, lst2.begin(), lst2.end());
-	slst.splice(slst.end(), slst2, slst2.begin(), slst2.end());
-
-
-	lst.sort();
-	slst.sort();
-
-	lst.unique();
-	slst.unique();
-
-	lst2.assign(lst.begin(), lst.end());
-	slst2.assign(slst.begin(), slst.end());
-
-	lst.merge(lst2);
-	slst.merge(slst2);
-
-	lst.reverse();
-	slst.reverse();
-
-	std::cout << "\nlst && slst" << std::endl;
-	lst.print();
-	print(slst);
-	std::cout << "\nlst2 && slst2" << std::endl;
-	lst2.print();
-	print(slst2);
-
-	lst2.push_front(12);
+	std::cout << "capacity " << v.capacity() << " size " << v.size() << std::endl;
+	print(v);
 }
 
 int			main()
 {
 	srand(time(NULL));
 
-	ListTest();
 	test_func();
 
 	std::cin.get();
@@ -199,3 +114,8 @@ int			main()
 
 	return 0;
 }
+
+/*
+	capacity 32 size 10
+	20 19 18 17 16 15 4 3 2 1
+*/

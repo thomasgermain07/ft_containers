@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/25 01:21:40 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/27 01:41:32 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,11 @@ namespace	ft
 		{
 			if (root)
 				_delete_tree(root);
-			if (ref.root)
+			if (ref._size)
 				root = ref.root->clone();
+			else
+				root = NULL;
+			_size = ref._size;
 			_set_end_node();
 			_end_node->right = max();
 			return *this;
@@ -135,7 +138,7 @@ namespace	ft
 		{
 			node 					n = new BinaryNode<T, Alloc>(val);
 			std::pair<node, bool>	ret(n, false);
-			if (!root)
+			if (!_size)
 			{
 				root = n;
 				++_size;

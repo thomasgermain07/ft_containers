@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/27 00:39:53 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/27 01:06:33 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,8 @@ namespace	ft
 		}
 		void				_add_elem_at(size_type index, const value_type& val, size_type n_elem = 1)
 		{
-			_move_back_from(index, n_elem);
+			if (_size)
+				_move_back_from(index, n_elem);
 			for (size_type i = 0; i < n_elem; ++i)
 				_allocator.construct(_array + (index + i), val);
 			_size += n_elem;
@@ -241,7 +242,8 @@ namespace	ft
 		{
 			size_type		_dist = _distance(first, last);
 
-			_move_back_from(index, _dist);
+			if (_size)
+				_move_back_from(index, _dist);
 			for (size_type i = 0; i < _dist; ++i)
 				_allocator.construct(_array + (index + i), *first++);
 			_size += _dist;

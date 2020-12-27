@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 15:10:23 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/17 19:31:19 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/27 02:45:30 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace	ft
 
 	private :
 		node			_node;
-		tree*			_tree;
+		tree			*_tree;
 	};
 
 	template<class T, class value_compare, class Alloc>
@@ -99,7 +99,7 @@ namespace	ft
 
 	private :
 		node			_node;
-		tree*			_tree;
+		tree			*_tree;
 	};
 
 	template<class T, class value_compare, class Alloc>

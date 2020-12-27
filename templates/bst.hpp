@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 22:06:15 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/27 01:41:32 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/27 03:03:27 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,13 @@ namespace	ft
 		BinarySearchTree() : root(NULL), _size(0), _comp(value_compare()) { _set_end_node();}
 		BinarySearchTree(const value_compare& comp) : root(NULL), _size(0), _comp(comp) { _set_end_node(); }
 		BinarySearchTree(const BinarySearchTree &ref)
-			: root(NULL), _size(ref.size()), _comp(ref._comp) { *this = ref; }
+			: root(NULL), _size(ref.size()), _comp(ref._comp), _end_node(NULL) { *this = ref; }
 		BinarySearchTree			&operator=(const BinarySearchTree &ref)
 		{
-			if (root)
+			if (_size)
 				_delete_tree(root);
+			if (_end_node)
+				delete _end_node;
 			if (ref._size)
 				root = ref.root->clone();
 			else
@@ -140,6 +142,8 @@ namespace	ft
 			std::pair<node, bool>	ret(n, false);
 			if (!_size)
 			{
+				if (root)
+					delete root;
 				root = n;
 				++_size;
 				ret.second = true;

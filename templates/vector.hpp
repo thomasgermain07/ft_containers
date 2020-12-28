@@ -6,7 +6,7 @@
 /*   By: thgermai <thgermai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 14:37:40 by thgermai          #+#    #+#             */
-/*   Updated: 2020/12/27 01:06:33 by thgermai         ###   ########.fr       */
+/*   Updated: 2020/12/28 01:29:41 by thgermai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,7 +307,7 @@ namespace	ft
 			pointer			src = _array + index;
 			pointer			dst = _array + index + n;
 
-			for (int i = _size - index; i >= 0; --i)
+			for (int i = _size - index - 1; i >= 0; --i)
 				_allocator.construct(dst + i, src[i]);
 		}
 		void				_move_front_from(size_type index, size_type n = 1)

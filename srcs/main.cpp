@@ -90,8 +90,6 @@ int			main()
 	srand(time(NULL));
 
 	main_menu();
-	std::cin.get();
-	system("leaks a.out");
 
 	return 0;
 }

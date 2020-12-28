@@ -1,5 +1,5 @@
 #include <iostream>
-// #include "templates/map.hpp"
+#include "templates/map.hpp"
 #include <map>
 
 template <class S, class T>

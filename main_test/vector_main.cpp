@@ -111,7 +111,7 @@ void test()
 	print_cap(vec3);
 	print_content(vec3);
 
-	std::vector<int>	vec4(vec.begin() + 1, vec.begin() + 5);
+	ft::vector<int>	vec4(vec.begin() + 1, vec.begin() + 5);
 	std::cout << "********** VEC4 **********\n";
 	print_cap(vec4);
 	print_content(vec4);

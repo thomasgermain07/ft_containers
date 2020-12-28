@@ -37,6 +37,7 @@ $(OBJSDIR) :
 
 clean :
 	@(rm -f $(NAME))
+	@(rm -rf $(NAME).dSYM)
 
 fclean : clean
 	@(rm -rf $(OBJSDIR))

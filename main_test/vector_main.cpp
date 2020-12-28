@@ -3,7 +3,7 @@
 #include <vector>
 
 template <class T>
-void	print_cap(std::vector<T> &vec)
+void	print_cap(ft::vector<T> vec)
 {
 	std::cout << "vec.size():\t" << vec.size() << std::endl;
 	std::cout << "vec.max_size():\t" << vec.max_size() << std::endl;
@@ -13,7 +13,7 @@ void	print_cap(std::vector<T> &vec)
 }
 
 template <class T>
-void	print_content(std::vector<T> vec)
+void	print_content(ft::vector<T> vec)
 {
 	std::cout << "print content with operator[]:\n";
 	for (size_t i = 0; i < vec.size(); i++)
@@ -22,28 +22,29 @@ void	print_content(std::vector<T> vec)
 }
 
 template <class T>
-void	print_content_iterator(std::vector<T> vec)
+void	print_content_iterator(ft::vector<T> vec)
 {
 	std::cout << "print content with iterarors:\n";
-	for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); it++)
+	for (typename ft::vector<T>::iterator it = vec.begin(); it != vec.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 }
 
 template <class T>
-void	print_reverse_iterator(std::vector<T> vec)
+void	print_reverse_iterator(ft::vector<T> vec)
 {
 	std::cout << "print content with reverse iterarors:\n";
-	for (typename std::vector<T>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	for (typename ft::vector<T>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 }
 
-int main(void)
+
+void test()
 {
 	std::cout << "################# TESTS MY VECTOR #################" << std::endl;
-	std::vector<int>	vec;
-	std::vector<int>	vec2;
+	ft::vector<int>	vec;
+	ft::vector<int>	vec2;
 
 	std::cout << "********** VEC **********\n";
 	print_cap(vec);
@@ -89,7 +90,7 @@ int main(void)
 	print_cap(vec);
 	print_content(vec);
 
-	std::vector<int>	vec3((size_t)4, 42);
+	ft::vector<int>	vec3((size_t)4, 42);
 	std::cout << "********** VEC3 **********\n";
 	print_cap(vec3);
 	print_content(vec3);
@@ -124,7 +125,7 @@ int main(void)
 	vec.clear();
 
 	std::cout << "********** VEC5 = VEC4 **********\n";
-	std::vector<int>	vec5;
+	ft::vector<int>	vec5;
 	vec5 = vec4;
 	print_cap(vec5);
 	print_content(vec5);
@@ -142,7 +143,7 @@ int main(void)
 	print_content_iterator(vec5);
 
 	std::cout << "********** VEC6 **********\n";
-	std::vector<int> vec6((size_t)9, 7777);
+	ft::vector<int> vec6((size_t)9, 7777);
 	print_cap(vec6);
 	print_content(vec6);
 	print_content_iterator(vec6);
@@ -178,8 +179,8 @@ int main(void)
 
 	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
 
-	std::vector<int> foo ((size_t)3,100);
-	std::vector<int> bar ((size_t)2,200);
+	ft::vector<int> foo ((size_t)3,100);
+	ft::vector<int> bar ((size_t)2,200);
 
 	if (foo == bar) std::cout << "foo and bar are equal\n";
 	if (foo != bar) std::cout << "foo and bar are not equal\n";
@@ -190,19 +191,19 @@ int main(void)
 
 	std::cout << std::endl;
 
-	std::vector<int> a;
+	ft::vector<int> a;
 	a.push_back(10);
 	a.push_back(20);
 	a.push_back(30);
-  	std::vector<int> b;
+  	ft::vector<int> b;
 	b.push_back(10);
 	b.push_back(20);
 	b.push_back(30);
-  	std::vector<int> c;
+  	ft::vector<int> c;
 	c.push_back(30);
 	c.push_back(20);
 	c.push_back(10);
-	std::vector<int> d;
+	ft::vector<int> d;
 	d.push_back(30);
 	d.push_back(20);
 
@@ -216,7 +217,7 @@ int main(void)
   	if (c > d) std::cout << "c is greater than d\n";
 
 	std::cout << "\n********** TEST STRING VECTOR **********\n";
-	std::vector<std::string>	vecst;
+	ft::vector<std::string>	vecst;
 	vecst.push_back("hello");
 	vecst.push_back("world");
 	vecst.push_back("lala");
@@ -250,7 +251,7 @@ int main(void)
 	print_content(vecst);
 
 	std::cout << "********** CREATE STRING VECTOR 2 **********\n";
-	std::vector<std::string> vecst2(5, "rom");
+	ft::vector<std::string> vecst2(5, "rom");
 	print_cap(vecst2);
 	print_content(vecst2);
 
@@ -274,11 +275,10 @@ int main(void)
 	print_cap(vecst);
 	print_content(vecst);
 
-	std::cout << "********** My test **********\n";
-	std::vector<char>			v1;
+}
 
-	v1.erase(v1.begin());
-
-
-	return (0);
+int main()
+{
+	test();
+	return 0;
 }

@@ -37,7 +37,7 @@ void	print_reverse(ft::list<T> lst)
 	std::cout << std::endl;
 }
 
-int main(void)
+void test(void)
 {
 	std::cout << "################# TESTS MY LIST #################" << std::endl;
 
@@ -405,5 +405,10 @@ int main(void)
 	if (c < d) std::cout << "c is less than d\n";
   	if (c > d) std::cout << "c is greater than d\n";
 
-	return (0);
+}
+
+int main()
+{
+	test();
+	return 0;
 }

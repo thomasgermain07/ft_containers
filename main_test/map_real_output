@@ -1,0 +1,189 @@
+################# TESTS MY MAP #################
+********** MP EMPTY **********
+mp.size():	0
+mp.max_size():	288230376151711743
+mp.empty():	1
+
+print content with iterarors:
+
+********** MP2 EMPTY **********
+mp.size():	0
+mp.max_size():	288230376151711743
+mp.empty():	1
+
+print content with iterarors:
+
+********** MP INSERT **********
+return insert: l -> 10 - bool: 1
+********** MP[] NOT EXISTING **********
+0
+mp["a"]: 4
+mp["q"]: 2
+mp["o"]: 15
+mp.size():	7
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+a -> 4
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+q -> 2
+
+print content with reverse iterarors:
+q -> 2
+p -> 4
+o -> 15
+l -> 10
+i -> 8
+b -> 0
+a -> 4
+
+********** MP INSERT EXISTING ELEMENT **********
+return insert: i -> 8 - bool: 0
+mp.size():	7
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+a -> 4
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+q -> 2
+
+********** OPERATOR = FROM EXISTING TO EMPTY ; MP2 = MP **********
+mp.size():	7
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+a -> 4
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+q -> 2
+
+********** OPERATOR = FROM EMPTY TO EXISTING ; MP2 = MP3 **********
+mp.size():	0
+mp.max_size():	288230376151711743
+mp.empty():	1
+
+print content with iterarors:
+
+print content with reverse iterarors:
+
+********** ERASE MP BEGIN **********
+mp.size():	6
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+q -> 2
+
+********** ERASE MP END - 1 **********
+mp.size():	5
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+
+********** ERASE MP ELEMENT WITH ITERATOR **********
+mp.size():	4
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+b -> 0
+i -> 8
+o -> 15
+p -> 4
+
+********** ERASE MP ELEMENTS 1 BY 1 **********
+mp.size():	0
+mp.max_size():	288230376151711743
+mp.empty():	1
+
+print content with iterarors:
+
+********** INSERT MP FROM MP2 BEGIN TO END **********
+mp.size():	7
+mp.max_size():	288230376151711743
+mp.empty():	0
+
+print content with iterarors:
+a -> 4
+b -> 0
+i -> 8
+l -> 10
+o -> 15
+p -> 4
+q -> 2
+
+********** MP CLEAR **********
+mp.size():	0
+mp.max_size():	288230376151711743
+mp.empty():	1
+
+print content with iterarors:
+
+********** LOWER & UPPER BOUND **********
+mp.size():	2
+mp.max_size():	461168601842738790
+mp.empty():	0
+
+print content with iterarors:
+a -> 20
+u -> 32
+
+********** EQUAL RANGE **********
+lower bound points to: b => 20
+upper bound points to: c => 30
+********** BEFORE SWAP **********
+MYMAP
+print content with iterarors:
+a -> 20
+u -> 32
+
+MYMAP2
+print content with iterarors:
+a -> 10
+b -> 20
+c -> 30
+
+********** AFTER SWAP **********
+MYMAP
+print content with iterarors:
+a -> 10
+b -> 20
+c -> 30
+
+MYMAP2
+print content with iterarors:
+a -> 20
+u -> 32
+
+
+
+
+******************** TESTS RELATIONAL OPERATORS ********************
+foo and bar are not equal
+foo is greater than bar
+foo is greater than or equal to bar

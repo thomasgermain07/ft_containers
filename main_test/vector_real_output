@@ -1,0 +1,289 @@
+################# TESTS MY VECTOR #################
+********** VEC **********
+vec.size():	0
+vec.max_size():	4611686018427387903
+vec.capacity():	0
+vec.empty():	1
+
+print content with operator[]:
+4 
+********** VEC2 **********
+vec.size():	0
+vec.max_size():	4611686018427387903
+vec.capacity():	0
+vec.empty():	1
+
+********** VEC - push_back values **********
+vec.size():	10
+vec.max_size():	4611686018427387903
+vec.capacity():	10
+vec.empty():	0
+
+print content with operator[]:
+4 5 2 4 10 15 7 1 2 90 
+print content with iterarors:
+4 5 2 4 10 15 7 1 2 90 
+5
+vector
+
+********** TEST INSERT 1 VEC **********
+ret iterator insert: 42
+
+vec.size():	11
+vec.max_size():	4611686018427387903
+vec.capacity():	11
+vec.empty():	0
+
+print content with operator[]:
+4 5 42 2 4 10 15 7 1 2 90 
+********** TEST INSERT 2 VEC **********
+vec.size():	18
+vec.max_size():	4611686018427387903
+vec.capacity():	18
+vec.empty():	0
+
+print content with operator[]:
+4 5 42 5555 5555 5555 5555 5555 5555 5555 2 4 10 15 7 1 2 90 
+********** VEC3 **********
+vec.size():	4
+vec.max_size():	4611686018427387903
+vec.capacity():	4
+vec.empty():	0
+
+print content with operator[]:
+42 42 42 42 
+print content with iterarors:
+42 42 42 42 
+********** TEST INSERT 2 VEC3 **********
+vec.size():	22
+vec.max_size():	4611686018427387903
+vec.capacity():	22
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 5555 5555 5555 5555 5555 5555 2 4 10 15 7 1 2 90 42 42 
+********** TEST RESIZE n < cap VEC3 **********
+vec.size():	9
+vec.max_size():	4611686018427387903
+vec.capacity():	9
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 5555 5555 5555 
+********** TEST RESIZE n > cap VEC3 **********
+vec.size():	19
+vec.max_size():	4611686018427387903
+vec.capacity():	19
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 5555 5555 5555 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 
+********** VEC4 **********
+vec.size():	4
+vec.max_size():	4611686018427387903
+vec.capacity():	4
+vec.empty():	0
+
+print content with operator[]:
+5 42 5555 5555 
+********** VEC **********
+vec.size():	7
+vec.max_size():	4611686018427387903
+vec.capacity():	7
+vec.empty():	0
+
+print content with operator[]:
+100 100 100 100 100 100 100 
+print content with iterarors:
+100 100 100 100 100 100 100 
+********** VEC5 = VEC4 **********
+vec.size():	4
+vec.max_size():	4611686018427387903
+vec.capacity():	4
+vec.empty():	0
+
+print content with operator[]:
+5 42 5555 5555 
+print content with iterarors:
+5 42 5555 5555 
+********** VEC5 = VEC3 **********
+vec.size():	19
+vec.max_size():	4611686018427387903
+vec.capacity():	19
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 5555 5555 5555 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 
+********** VEC5 = VEC **********
+vec.size():	0
+vec.max_size():	4611686018427387903
+vec.capacity():	0
+vec.empty():	1
+
+print content with operator[]:
+
+print content with iterarors:
+
+********** VEC6 **********
+vec.size():	9
+vec.max_size():	4611686018427387903
+vec.capacity():	9
+vec.empty():	0
+
+print content with operator[]:
+7777 7777 7777 7777 7777 7777 7777 7777 7777 
+print content with iterarors:
+7777 7777 7777 7777 7777 7777 7777 7777 7777 
+********** SWAP VEC6 - VEC3 **********
+********** VEC3 **********
+vec.size():	9
+vec.max_size():	4611686018427387903
+vec.capacity():	9
+vec.empty():	0
+
+print content with operator[]:
+7777 7777 7777 7777 7777 7777 7777 7777 7777 
+********** VEC6 **********
+vec.size():	19
+vec.max_size():	4611686018427387903
+vec.capacity():	19
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 5555 5555 5555 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 
+********** TEST ERASE 6th to 16th VALUES VEC6 **********
+return value erase: 1111
+vec.size():	9
+vec.max_size():	4611686018427387903
+vec.capacity():	9
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 1111 1111 1111 
+********** TEST ERASE VALUES VEC6 **********
+return value erase: 1111
+vec.size():	8
+vec.max_size():	4611686018427387903
+vec.capacity():	8
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 5555 1111 1111 
+return value erase: 1111
+vec.size():	7
+vec.max_size():	4611686018427387903
+vec.capacity():	7
+vec.empty():	0
+
+print content with operator[]:
+42 42 4 5 42 1111 1111 
+return value erase: 5
+vec.size():	6
+vec.max_size():	4611686018427387903
+vec.capacity():	6
+vec.empty():	0
+
+print content with operator[]:
+42 42 5 42 1111 1111 
+
+
+
+******************** TESTS RELATIONAL OPERATORS ********************
+foo and bar are not equal
+foo is less than bar
+foo is less than or equal to bar
+
+a and b are equal
+b and c are not equal
+b is less than c
+c is greater than b
+a is less than or equal to b
+a is greater than or equal to b
+c is greater than d
+
+********** TEST STRING VECTOR **********
+vec.size():	8
+vec.max_size():	768614336404564650
+vec.capacity():	8
+vec.empty():	0
+
+print content with iterarors:
+hello world lala popo lolo papapapa nonononono hehehe 
+
+********** ERASE STRING VECTOR **********
+return value erase: lolo
+vec.size():	5
+vec.max_size():	768614336404564650
+vec.capacity():	5
+vec.empty():	0
+
+print content with iterarors:
+hello lolo papapapa nonononono hehehe 
+
+********** ERASE 1 ELEM STRING VECTOR **********
+return value erase: nonononono
+vec.size():	4
+vec.max_size():	768614336404564650
+vec.capacity():	4
+vec.empty():	0
+
+print content with iterarors:
+hello lolo nonononono hehehe 
+
+********** ERASE LAST ELEM STRING VECTOR **********
+vec.size():	3
+vec.max_size():	768614336404564650
+vec.capacity():	3
+vec.empty():	0
+
+print content with iterarors:
+hello lolo nonononono 
+********** INSERT STRING VECTOR **********
+return value insert: world
+vec.size():	4
+vec.max_size():	768614336404564650
+vec.capacity():	4
+vec.empty():	0
+
+print content with operator[]:
+hello world lolo nonononono 
+********** CREATE STRING VECTOR 2 **********
+vec.size():	5
+vec.max_size():	768614336404564650
+vec.capacity():	5
+vec.empty():	0
+
+print content with operator[]:
+rom rom rom rom rom 
+********** INSERT STRING VECTOR 2 **********
+vec.size():	9
+vec.max_size():	768614336404564650
+vec.capacity():	9
+vec.empty():	0
+
+print content with operator[]:
+rom rom rom hello world lolo nonononono rom rom 
+********** INSERT STRING VECTOR 3 **********
+vec.size():	13
+vec.max_size():	768614336404564650
+vec.capacity():	13
+vec.empty():	0
+
+print content with operator[]:
+rom rom rom hello world chop chop chop chop chop chop chop chop lolo nonononono rom rom 
+********** RESIZE n < size STRING VECTOR **********
+vec.size():	1
+vec.max_size():	768614336404564650
+vec.capacity():	1
+vec.empty():	0
+
+print content with operator[]:
+hello 
+********** RESIZE n > size STRING VECTOR **********
+vec.size():	6
+vec.max_size():	768614336404564650
+vec.capacity():	6
+vec.empty():	0
+
+print content with operator[]:
+hello lili lili lili lili lili 
